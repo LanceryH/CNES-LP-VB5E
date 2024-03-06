@@ -63,7 +63,8 @@ class Ui(QtWidgets.QMainWindow):
         self.tableWidget.setHorizontalHeaderLabels(headerH)
         self.tableWidget.setVerticalHeaderLabels(headerV)
         self.label_10.setText(str(date.today()))
-        
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
         
         self.actionQuitter.triggered.connect(self.menuQuitter_fonction)
         self.actionAffichage_Temp_rature.triggered.connect(self.actionAffichage_Temp_rature_fonction)
@@ -101,34 +102,37 @@ class Ui(QtWidgets.QMainWindow):
     def pushButton_2_fonction(self):
         if self.path:
             table_data, data_expo = clear_data(self.path)
-            system_ESA = Equations_ESA(table_data, data_expo)
-            system_ESA.Initialisation()
+            #system_ESA = Equations_ESA(table_data, data_expo)
+            #system_ESA.Initialisation()
+            #table_data, data_expo = clear_data("L:\Projet_stage\LP_VB5E_3\Données\\EC9323-2.xls")
+
             system_CNES = Equations_CNES(table_data, data_expo)
             system_CNES.Initialisation()
-            system_ONERA = Equations_ONERA(table_data, data_expo)
-            system_ONERA.Initialisation()
+
+            result_dic_CNES = system_CNES.function_TML_fit()            #system_ONERA = Equations_ONERA(table_data, data_expo)
+            #system_ONERA.Initialisation()
             
             #ESA method
-            mu_t_ESA = system_ESA.function_TML_fit(n=6)
+            #mu_t_ESA = system_ESA.function_TML_fit(n=6)
             
             #CNES method
-            mu_t_CNES, params = system_CNES.function_TML_fit()
+            #mu_t_CNES, params = system_CNES.function_TML_fit()
             
             #ONERA method
-            mu_t_ONERA = system_ONERA.function_TML_fit()
-            tau = int(system_ONERA.tau)
+            #mu_t_ONERA = system_ONERA.function_TML_fit()
+            #tau = int(system_ONERA.tau)
             
             self.sc.ax1.clear()
             self.sc.ax1.plot(table_data["time_tot"],table_data["mu_tot"],"b", label = "data",linewidth=2)
-            self.sc.ax1.plot(table_data["time"][0],mu_t_ESA,"r",linewidth=1, label = "prediction n=6 esa")
-            self.sc.ax1.plot(table_data["time_tot"],mu_t_CNES,"c",linewidth=1, label = "prediction n=5 cnes")
-            self.sc.ax1.plot(table_data["time"][0][:tau],mu_t_ONERA[:tau],"fuchsia",linewidth=1, label = "prediction onera <τ")
-            self.sc.ax1.plot(table_data["time"][0][tau:],mu_t_ONERA[tau:],"green",linewidth=1, label = "prediction onera >τ")
+            #self.sc.ax1.plot(table_data["time"][0],mu_t_ESA,"r",linewidth=1, label = "prediction n=6 esa")
+            self.sc.ax1.plot(table_data["time_tot"],result_dic_CNES["fitted data 5exp"],"c",linewidth=1, label = "prediction n=5 cnes")
+            #self.sc.ax1.plot(table_data["time"][0][:tau],mu_t_ONERA[:tau],"fuchsia",linewidth=1, label = "prediction onera <τ")
+            #self.sc.ax1.plot(table_data["time"][0][tau:],mu_t_ONERA[tau:],"green",linewidth=1, label = "prediction onera >τ")
             self.sc.ax1.legend()
             self.sc.ax1.grid()
-            plt.draw()
+            #plt.draw()
             
-            self.array_2_table(params)
+            #self.array_2_table(params)
         else:
             print("pls select a file first")
             
@@ -137,10 +141,7 @@ class Ui(QtWidgets.QMainWindow):
             self.tableWidget.setItem(0,column,QTableWidgetItem(str(array[column])))
                     
     def pushButton_3_fonction(self):
-        table_data, data_expo = clear_data(self.path)
-        system_ONERA = Equations_ONERA(table_data, data_expo)
-        system_ONERA.Initialisation()
-        print(system_ONERA.function_TML())
+        plt.draw()
 
         
         
