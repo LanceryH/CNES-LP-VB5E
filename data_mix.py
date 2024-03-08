@@ -30,9 +30,10 @@ def clear_data(dir_path, nb_exp = 5):
     table_expo["time"] = time_sep
     table_expo["mu"] = mu_sep
     table_expo["temp"] = temp_sep
-    table_expo["time_tot"] = time_tot[::20]
-    table_expo["mu_tot"] = mu_tot[::20]
-    table_expo["temp_tot"] = temp_tot[::20]
+    table_expo["time_tot_tot"] = time_tot
+    table_expo["time_tot"] = time_tot[::40]
+    table_expo["mu_tot"] = mu_tot[::40]
+    table_expo["temp_tot"] = temp_tot[::40]
     
     data_expo = {"mu":[1,1,1,1,1],
                  "E":[1,1,1,1,1],

@@ -16,6 +16,7 @@ class Equations_CNES:
         self.T_p_1 = None
         self.T_p_2 = None
         self.Kelvin_cte = 273.15
+        self.tronq = 40
         self.mu_i_0 = 0.01 #initial mass that could be potentially be outgassed
         self.R_cte = 1.986 #cal.mol-1.K-1
         self.result_dic = {"parameter exp" : [],
@@ -32,9 +33,9 @@ class Equations_CNES:
     def Initialisation(self):
         for ind in range(len(self.table_data["mu"])):
             self.data_expo["E"][ind] = 1500 * ind + 500
-            self.data_expo["A"][ind] = 0.9
+            self.data_expo["A"][ind] = 10**ind
             self.data_expo["mu"][ind] = 0.8
-        self.data_expo["A"][-1] =  1.5
+
 
     def function_TML(self, *params):
         n = len(params)//3
@@ -44,15 +45,21 @@ class Equations_CNES:
         A_s = params[:n]
         E_s = params[n:n*2]
         mi_s = params[n*2:]
-
+        """
+        if len(self.result_dic["parameter exp"])>0:
+            if params[:n]>self.result_dic["parameter exp"][-1][0]:
+                A_s = params[:n]
+            else:
+                return mu_t"""
         for i in range(1,nb_points):
             temp_moy = self.table_data["temp_tot"][i-1] + (self.table_data["temp_tot"][i] - self.table_data["temp_tot"][i-1])/2
             for j in range (n):
-                Dt = (24*60/20)
+                Dt = self.table_data["time_tot"][i] - self.table_data["time_tot"][i-1]
                 k_i = A_s[j]*np.exp(-E_s[j]/(self.R_cte*temp_moy))
                 We = (mi_s[j]-sum[j])*(1-np.exp(-1*Dt*k_i))
                 sum[j] += We
                 mu_t[i] = sum[j]
+            
         return mu_t
     
     def function_TML_full(self, *params, temp=25):
@@ -66,7 +73,7 @@ class Equations_CNES:
 
         for i in range(1,nb_points):
             for j in range (n):
-                Dt = (24*60*5/20)
+                Dt = (24*60//self.tronq)
                 k_i = A_s[j]*np.exp(-E_s[j]/(self.R_cte*temp))
                 We = (mi_s[j]-sum[j])*(1-np.exp(-1*Dt*k_i))
                 sum[j] += We
@@ -83,7 +90,7 @@ class Equations_CNES:
             self.result_dic["parameter exp"].append(params_lsq)
             self.result_dic["fitted data exp"].append(exp_i) 
             self.result_dic["fitted data 5exp"] += exp_i
-        
+        """
         plt.figure(0)
         plt.title("Cinétique de dégazage comparaison Essai/Numérisation \n ECXXXX ")
         plt.plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b",label="data")
@@ -96,8 +103,10 @@ class Equations_CNES:
         plt.legend()
         plt.ylim(-0.1,np.max(self.table_data["mu_tot"])*1.1)
         plt.grid()
-        plt.show()
-        
+        plt.show()"""
+
+        # Attention a sommer uniquement la difference entre la i+1 et la i
+        # au lieu de sommer entierement les sommes ;)
         temp = [25,50,75,100,125]
         precision_3D = 100
         sum_of_exp = []
@@ -112,7 +121,7 @@ class Equations_CNES:
         
         # Régression polynomiale ordre 4
         Z_liss = []
-        for ind_i in range(360):
+        for ind_i in range(5*24*60//self.tronq):
             coeffs = np.polyfit(temp, self.result_dic["Z_3D"][:,ind_i], 4)
             polynomial = np.poly1d(coeffs)
             t = np.linspace(min(temp),max(temp),precision_3D)
@@ -122,28 +131,32 @@ class Equations_CNES:
         xx = self.table_data["time_tot"]
         yy = np.linspace(min(temp),max(temp),precision_3D)
         self.result_dic["X_3D_smooth"], self.result_dic["Y_3D_smooth"] = np.meshgrid(xx, yy)
-        
+
+        """
         fig = plt.figure(1)
         ax = fig.add_subplot(projection='3d')
         ax.view_init(elev=13, azim=-127)
-        surface = ax.plot_surface(self.result_dic["X_3D_smooth"], self.result_dic["Y_3D_smooth"], self.result_dic["Z_3D_smooth"],alpha=0.5,linewidth=1)
-        fig.colorbar(surface)
-        ax.grid(True, linestyle="--", linewidth=0.5, alpha=0.5)
         for ind_i in range(len(temp)):
+            print(self.result_dic["Z_3D"][ind_i,0])
             ax.plot(self.result_dic["X_3D"], self.result_dic["Y_3D"][ind_i], self.result_dic["Z_3D"][ind_i,:],"black")
-        plt.show()
+        surface = ax.plot_wireframe(self.result_dic["X_3D_smooth"], 
+                                  self.result_dic["Y_3D_smooth"], 
+                                  self.result_dic["Z_3D_smooth"], 
+                                  alpha=0.5, 
+                                  antialiased=True)
+        plt.show()"""
     
-        return self.result_dic["fitted data 5exp"], []
+        return 
         
     def objective(self, x, ind):
         if ind == 0:
-            return np.array(self.table_data["mu_tot"])[:24*3*1] - np.array(self.function_TML(*x))[:24*3*1]
+            return np.array(self.table_data["mu_tot"])[:24*60*1//self.tronq] - np.array(self.function_TML(*x))[:24*60*1//self.tronq]
         elif ind == 1:
-            return np.array(self.table_data["mu_tot"]-self.function_TML(*self.result_dic["parameter exp"][0]))[:24*3*2] - np.array(self.function_TML(*x))[:24*3*2]
+            return np.array(self.table_data["mu_tot"]-self.function_TML(*self.result_dic["parameter exp"][0]))[:24*60*2//self.tronq] - np.array(self.function_TML(*x))[:24*60*2//self.tronq]
         elif ind == 2:
-            return np.array(self.table_data["mu_tot"]-self.function_TML(*self.result_dic["parameter exp"][1])-self.function_TML(*self.result_dic["parameter exp"][0]))[:24*3*3] - np.array(self.function_TML(*x))[:24*3*3]
+            return np.array(self.table_data["mu_tot"]-self.function_TML(*self.result_dic["parameter exp"][1])-self.function_TML(*self.result_dic["parameter exp"][0]))[:24*60*3//self.tronq] - np.array(self.function_TML(*x))[:24*60*3//self.tronq]
         elif ind == 3:
-            return np.array(self.table_data["mu_tot"]-self.function_TML(*self.result_dic["parameter exp"][2])-self.function_TML(*self.result_dic["parameter exp"][1])-self.function_TML(*self.result_dic["parameter exp"][0]))[:24*3*4] - np.array(self.function_TML(*x))[:24*3*4]
+            return np.array(self.table_data["mu_tot"]-self.function_TML(*self.result_dic["parameter exp"][2])-self.function_TML(*self.result_dic["parameter exp"][1])-self.function_TML(*self.result_dic["parameter exp"][0]))[:24*60*4//self.tronq] - np.array(self.function_TML(*x))[:24*60*4//self.tronq]
         elif ind == 4:
-            return np.array(self.table_data["mu_tot"]-self.function_TML(*self.result_dic["parameter exp"][3])-self.function_TML(*self.result_dic["parameter exp"][2])-self.function_TML(*self.result_dic["parameter exp"][1])-self.function_TML(*self.result_dic["parameter exp"][0]))[:24*3*5] - np.array(self.function_TML(*x))[:24*3*5]
+            return np.array(self.table_data["mu_tot"]-self.function_TML(*self.result_dic["parameter exp"][3])-self.function_TML(*self.result_dic["parameter exp"][2])-self.function_TML(*self.result_dic["parameter exp"][1])-self.function_TML(*self.result_dic["parameter exp"][0]))[:24*60*5//self.tronq] - np.array(self.function_TML(*x))[:24*60*5//self.tronq]
     
