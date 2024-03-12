@@ -42,11 +42,16 @@ def clear_data(dir_path, nb_exp = 5):
                  "E":[1,1,1,1,1],
                  "A":[1,1,1,1,1],
                  "Alpha":[1,1,1,1,1],
-                 "Ka":0}
+                 "Ka":0,
+                 "tau":[1,1,1,1,1,1],
+                 "mi":[1,1,1,1,1,1]}
     
     M_rearranged = []
+    T_rearranged = []
     for ind in range(5):
-        M_rearranged.extend(np.array(table_expo["mu"][ind])-np.array(table_expo["mu"][ind])[0])
+        M_rearranged.append(np.array(table_expo["mu"][ind])-np.array(table_expo["mu"][ind])[0])
+        T_rearranged.append(np.array(table_expo["time"][ind])-np.array(table_expo["time"][ind])[0])
     table_expo["mu_tot_reshaped"] = M_rearranged
+    table_expo["time_tot_reshaped"] = T_rearranged
 
     return table_expo, data_expo

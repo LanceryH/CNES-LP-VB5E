@@ -7,9 +7,7 @@ from datetime import date
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar
 import matplotlib.pyplot as plt
 from data_mix import *
-from resolution_CNES import *
-from resolution_ESA import *
-from resolution_ONERA import *
+
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -23,9 +21,10 @@ class Ui(QtWidgets.QMainWindow):
         self.setWindowTitle("LP/VB5E")
         self.path = None
         
-        self.treeWidget.resizeColumnToContents(0)
         self.treeWidget.expandAll()
         self.treeWidget.setAlternatingRowColors(True)
+        self.treeWidget_2.expandAll()
+        self.treeWidget_2.setAlternatingRowColors(True)
 
         self.figure_2D, self.axs_2D= plt.subplots(2, 1, sharex=True, gridspec_kw={"height_ratios": [2,1]})#, figsize=(10, 4))
         self.figure_2D.tight_layout()
@@ -89,10 +88,17 @@ class Ui(QtWidgets.QMainWindow):
         return
             
     def pushButton_fonction(self):
+        import resolution_CNES as Res_CNES
+        import resolution_ESA as Res_ESA
+        import resolution_ONERA as Res_ONERA
+
         table_data, data_expo = clear_data(self.path)
         if self.path:
             if self.comboBox_7.currentText() == "CNES":
-                system = Equations_CNES(table_data, data_expo, 5)
+                self.treeWidget_2.hide()
+                self.treeWidget_3.hide()
+                self.treeWidget.show()
+                system = Res_CNES.Equations_CNES(table_data, data_expo, 5)
                 system.Initialisation()
                 system.function_TML_fit()  
 
@@ -123,7 +129,7 @@ class Ui(QtWidgets.QMainWindow):
                 self.axs_2D[0].plot(table_data["time_tot"],table_data["mu_tot"],"b", label="data")
                 self.axs_2D[0].plot(table_data["time_tot"],system.result_dic["fitted data 5exp"],"r--", label="prediction n=5 cnes")
                 markers = ["s","D","o","x","v"]
-                for ind_i in range(5):
+                for ind_i in range(len(system.result_dic["fitted data exp"])):
                     self.axs_2D[1].plot(table_data["time_tot"][::10],
                                     system.result_dic["fitted data exp"][ind_i][::10],
                                     "black",
@@ -151,7 +157,10 @@ class Ui(QtWidgets.QMainWindow):
                 self.canvas_3D.draw()
                 
             if self.comboBox_7.currentText() == "ESTEC":
-                system = Equations_ESA(table_data, data_expo)
+                self.treeWidget.hide()
+                self.treeWidget_3.hide()
+                self.treeWidget_2.show()
+                system = Res_ESA.Equations_ESA(table_data, data_expo)
                 system.Initialisation()
                 system.function_TML_fit(n=6)
                 self.axs_2D[0].cla()
@@ -159,8 +168,17 @@ class Ui(QtWidgets.QMainWindow):
                 self.axs_2D[1].set_xlabel("Temps [minutes]")
                 self.axs_2D[0].set_ylabel("Perte de masse [%]")
                 self.axs_2D[0].plot(table_data["time_tot"],table_data["mu_tot"],"b", label="data")
-                self.axs_2D[0].plot(table_data["time_tot_tot"][:24*60],system.result_dic["fitted data 5exp"],"r--", label="prediction n=5 cnes")
+                self.axs_2D[0].plot(table_data["time_tot_tot"],system.result_dic["fitted data 5exp"],"r--", label="prediction n=5 cnes")
                 markers = ["s","D","o","x","v"]
+                for ind_i in range(len(system.result_dic["fitted data exp"])):
+                    self.axs_2D[1].plot(table_data["time"][ind_i][::100],
+                                    system.result_dic["fitted data exp"][ind_i][::100],
+                                    "black",
+                                    label=f"Expo {ind_i+1}",
+                                    markersize=3,
+                                    marker=markers[ind_i],
+                                    linewidth=1)
+                
                 self.axs_2D[0].legend()
                 self.axs_2D[1].legend()
                 self.axs_2D[0].grid()
