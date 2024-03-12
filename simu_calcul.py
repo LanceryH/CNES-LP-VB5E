@@ -11,4 +11,5 @@ if __name__ == '__main__':
     system_CNES = Equations_CNES(table_data, data_expo, 5)
     system_CNES.Initialisation()
 
-    mu_t_CNES, params = system_CNES.function_TML_fit()
+    system_CNES.function_TML_fit()
+    print(system_CNES.result_dic["parameter exp"])

@@ -20,6 +20,16 @@ class Equations_ESA:
         self.Kelvin_cte = 273.15
         self.m_initial = 14.4708/1000 #g
         self.mu_i_0 = 0 #initial mass that could be potentially be outgassed
+        self.result_dic = {"parameter exp" : [],
+                           "fitted data exp" : [],
+                           "X_3D" : [],
+                           "Y_3D" : [],
+                           "Z_3D" : [],
+                           "X_3D_smooth" : [],
+                           "X_3D_smooth" : [],
+                           "Y_3D_smooth" : [],
+                           "Z_3D_smooth" : [],
+                           "fitted data 5exp" : 0}
 
     def Initialisation(self):
         for ind in range(len(self.table_data["mu"])):
@@ -40,8 +50,19 @@ class Equations_ESA:
         x0=np.ones(n+1)
         x0[-1]=self.m_initial
         params_lsq = leastsq(self.objective, x0, maxfev=2000)[0]
-        #print(params_lsq)
-        return self.function_TML(*params_lsq)
+
+        exp_i = self.function_TML(*params_lsq)
+        self.result_dic["parameter exp"].append(params_lsq)
+        self.result_dic["fitted data exp"].append(exp_i) 
+        self.result_dic["fitted data 5exp"] += exp_i
+
+        d_m_T2 = (exp_i[-1] - exp_i[-2])/(self.table_data["time"][1][-1] - self.table_data["time"][1][0])
+        d_m_T1 = (exp_i[1] - exp_i[0])/(self.table_data["time"][0][-1] - self.table_data["time"][0][0])
+        ka = d_m_T2/d_m_T1
+        print(self.table_data["temp"][1][0],self.table_data["temp"][0][0])
+        Ea = np.log(ka)*self.R*self.table_data["temp"][0][0]*self.table_data["temp"][1][0]/(self.table_data["temp"][1][0]-self.table_data["temp"][0][0])
+        print(ka,Ea)
+        return 
 
     def objective(self, x):
         return self.table_data["mu"][0] - self.function_TML(*x)

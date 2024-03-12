@@ -33,7 +33,7 @@ class Equations_CNES:
     def Initialisation(self):
         for ind in range(len(self.table_data["mu"])):
             self.data_expo["E"][ind] = 1500 * ind + 500
-            self.data_expo["A"][ind] = 10**ind
+            self.data_expo["A"][ind] = ind*10**ind + 0.001
             self.data_expo["mu"][ind] = 0.8
 
 
@@ -45,12 +45,6 @@ class Equations_CNES:
         A_s = params[:n]
         E_s = params[n:n*2]
         mi_s = params[n*2:]
-        """
-        if len(self.result_dic["parameter exp"])>0:
-            if params[:n]>self.result_dic["parameter exp"][-1][0]:
-                A_s = params[:n]
-            else:
-                return mu_t"""
         for i in range(1,nb_points):
             temp_moy = self.table_data["temp_tot"][i-1] + (self.table_data["temp_tot"][i] - self.table_data["temp_tot"][i-1])/2
             for j in range (n):
@@ -70,7 +64,6 @@ class Equations_CNES:
         A_s = params[:n]
         E_s = params[n:n*2]
         mi_s = params[n*2:]
-
         for i in range(1,nb_points):
             for j in range (n):
                 Dt = (24*60//self.tronq)
@@ -90,23 +83,8 @@ class Equations_CNES:
             self.result_dic["parameter exp"].append(params_lsq)
             self.result_dic["fitted data exp"].append(exp_i) 
             self.result_dic["fitted data 5exp"] += exp_i
-        """
-        plt.figure(0)
-        plt.title("Cinétique de dégazage comparaison Essai/Numérisation \n ECXXXX ")
-        plt.plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b",label="data")
-        plt.plot(self.table_data["time_tot"][::10],self.result_dic["fitted data exp"][0][::10],"black",label="expo1", marker="s", markersize=3,linewidth=1)
-        plt.plot(self.table_data["time_tot"][::10],self.result_dic["fitted data exp"][1][::10],"black",label="expo2", marker="D", markersize=3,linewidth=1)
-        plt.plot(self.table_data["time_tot"][::10],self.result_dic["fitted data exp"][2][::10],"black",label="expo3", marker="o", markersize=3,linewidth=1)
-        plt.plot(self.table_data["time_tot"][::10],self.result_dic["fitted data exp"][3][::10],"black",label="expo4", marker="x", markersize=3,linewidth=1)
-        plt.plot(self.table_data["time_tot"][::10],self.result_dic["fitted data exp"][4][::10],"black",label="expo5", marker="v", markersize=3,linewidth=1)
-        plt.plot(self.table_data["time_tot"],self.result_dic["fitted data 5exp"],"r--",label="fit_data")
-        plt.legend()
-        plt.ylim(-0.1,np.max(self.table_data["mu_tot"])*1.1)
-        plt.grid()
-        plt.show()"""
 
-        # Attention a sommer uniquement la difference entre la i+1 et la i
-        # au lieu de sommer entierement les sommes ;)
+        # Enregistrement des data
         temp = [25,50,75,100,125]
         precision_3D = 100
         sum_of_exp = []
@@ -131,21 +109,6 @@ class Equations_CNES:
         xx = self.table_data["time_tot"]
         yy = np.linspace(min(temp),max(temp),precision_3D)
         self.result_dic["X_3D_smooth"], self.result_dic["Y_3D_smooth"] = np.meshgrid(xx, yy)
-
-        """
-        fig = plt.figure(1)
-        ax = fig.add_subplot(projection='3d')
-        ax.view_init(elev=13, azim=-127)
-        for ind_i in range(len(temp)):
-            print(self.result_dic["Z_3D"][ind_i,0])
-            ax.plot(self.result_dic["X_3D"], self.result_dic["Y_3D"][ind_i], self.result_dic["Z_3D"][ind_i,:],"black")
-        surface = ax.plot_wireframe(self.result_dic["X_3D_smooth"], 
-                                  self.result_dic["Y_3D_smooth"], 
-                                  self.result_dic["Z_3D_smooth"], 
-                                  alpha=0.5, 
-                                  antialiased=True)
-        plt.show()"""
-    
         return 
         
     def objective(self, x, ind):
