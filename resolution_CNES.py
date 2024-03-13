@@ -96,7 +96,7 @@ class Equations_CNES:
                 integral_of_arr += self.function_TML_full(*self.result_dic["parameter exp"][ind_j],temp=temp[ind_j]) 
             sum_of_exp.append(integral_of_arr)    
         self.result_dic["Z_3D"] = np.array(sum_of_exp)
-        
+
         # Régression polynomiale ordre 4
         Z_liss = []
         for ind_i in range(5*24*60//self.tronq):
@@ -110,7 +110,7 @@ class Equations_CNES:
         yy = np.linspace(min(temp),max(temp),precision_3D)
         self.result_dic["X_3D_smooth"], self.result_dic["Y_3D_smooth"] = np.meshgrid(xx, yy)
         return 
-        
+
     def objective(self, x, ind):
         if ind == 0:
             return np.array(self.table_data["mu_tot"])[:24*60*1//self.tronq] - np.array(self.function_TML(*x))[:24*60*1//self.tronq]

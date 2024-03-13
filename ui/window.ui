@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1115</width>
-    <height>754</height>
+    <width>1118</width>
+    <height>751</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <x>10</x>
       <y>10</y>
       <width>351</width>
-      <height>241</height>
+      <height>191</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -33,890 +33,6 @@
      <attribute name="title">
       <string>Paramètres</string>
      </attribute>
-     <widget class="QTabWidget" name="tabWidget_3">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>90</y>
-        <width>331</width>
-        <height>121</height>
-       </rect>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="currentIndex">
-       <number>4</number>
-      </property>
-      <widget class="QWidget" name="tab_5">
-       <attribute name="title">
-        <string>Expo1</string>
-       </attribute>
-       <widget class="QLabel" name="label_66">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>40</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Pre Facteur</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_67">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>70</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Masse init. dégazée</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_68">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>10</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>[cal.mol-1]</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_69">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>10</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Energie d'activation</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_70">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>40</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>[s-1]</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_71">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>70</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>[%]</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox_4">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>10</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox_5">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>40</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox_6">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>70</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QWidget" name="tab_6">
-       <attribute name="title">
-        <string>Expo2</string>
-       </attribute>
-       <widget class="QLabel" name="label_60">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>40</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Pre Facteur</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_61">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>70</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Masse init. dégazée</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_62">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>10</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>[cal.mol-1]</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_63">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>10</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Energie d'activation</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_64">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>40</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>[s-1]</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_65">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>70</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>[%]</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox_7">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>40</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox_8">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>10</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox_9">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>70</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QWidget" name="tab_7">
-       <attribute name="title">
-        <string>Expo3</string>
-       </attribute>
-       <widget class="QLabel" name="label_54">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>40</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Pre Facteur</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_55">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>70</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Masse init. dégazée</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_56">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>10</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>[cal.mol-1]</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_57">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>10</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Energie d'activation</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_58">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>40</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>[s-1]</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_59">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>70</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>[%]</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox_10">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>10</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox_11">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>70</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox_12">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>40</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QWidget" name="tab_8">
-       <attribute name="title">
-        <string>Expo4</string>
-       </attribute>
-       <widget class="QLabel" name="label_48">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>40</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Pre Facteur</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_49">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>70</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Masse init. dégazée</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_50">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>10</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>[cal.mol-1]</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_51">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>10</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Energie d'activation</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_52">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>40</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>[s-1]</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_53">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>70</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>[%]</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox_13">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>10</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox_14">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>70</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox_15">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>40</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QWidget" name="tab_9">
-       <attribute name="title">
-        <string>Expo5</string>
-       </attribute>
-       <widget class="QLabel" name="label_45">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>70</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>[%]</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_46">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>40</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>[s-1]</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_47">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>10</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>[cal.mol-1]</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_42">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>10</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Energie d'activation</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_44">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>40</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Pre Facteur</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_43">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>70</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Masse init. dégazée</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox_16">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>10</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox_17">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>70</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox_18">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>40</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-     </widget>
      <widget class="QGroupBox" name="groupBox_5">
       <property name="geometry">
        <rect>
@@ -1015,93 +131,29 @@
        </property>
       </widget>
      </widget>
-    </widget>
-    <widget class="QWidget" name="tab_2">
-     <attribute name="title">
-      <string>Simulation Dégazage</string>
-     </attribute>
-     <widget class="QGroupBox" name="groupBox_3">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>181</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string/>
-      </property>
-      <widget class="QSpinBox" name="spinBox">
-       <property name="geometry">
-        <rect>
-         <x>101</x>
-         <y>10</y>
-         <width>71</width>
-         <height>22</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_16">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>111</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Nb. de paliers</string>
-       </property>
-      </widget>
-      <widget class="QSpinBox" name="spinBox_3">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>40</y>
-         <width>71</width>
-         <height>22</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_18">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>40</y>
-         <width>101</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Limite temps</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QGroupBox" name="groupBox_4">
+     <widget class="QGroupBox" name="groupBox_6">
       <property name="geometry">
        <rect>
         <x>190</x>
-        <y>10</y>
-        <width>141</width>
+        <y>90</y>
+        <width>151</width>
         <height>71</height>
        </rect>
       </property>
       <property name="title">
        <string/>
       </property>
-      <widget class="QSpinBox" name="spinBox_2">
+      <widget class="QSpinBox" name="spinBox_4">
        <property name="geometry">
         <rect>
-         <x>90</x>
+         <x>71</x>
          <y>10</y>
-         <width>42</width>
+         <width>71</width>
          <height>22</height>
         </rect>
        </property>
       </widget>
-      <widget class="QLabel" name="label_17">
+      <widget class="QLabel" name="label_19">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -1115,15 +167,115 @@
        </property>
       </widget>
      </widget>
+     <widget class="QGroupBox" name="groupBox_7">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>90</y>
+        <width>181</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <widget class="QSpinBox" name="spinBox_5">
+       <property name="geometry">
+        <rect>
+         <x>101</x>
+         <y>10</y>
+         <width>71</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_20">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>111</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Nb. de paliers</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="spinBox_6">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>40</y>
+         <width>71</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_21">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>101</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Limite temps</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Simulation Dégazage</string>
+     </attribute>
+     <widget class="QGroupBox" name="groupBox_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>331</width>
+        <height>151</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <widget class="QScrollArea" name="scrollArea">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>311</width>
+         <height>131</height>
+        </rect>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>309</width>
+          <height>129</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+     </widget>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_12">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>660</y>
+      <y>680</y>
       <width>351</width>
-      <height>51</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="title">
@@ -1145,10 +297,10 @@
     <widget class="QLabel" name="label_10">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>26</y>
+       <x>80</x>
+       <y>6</y>
        <width>41</width>
-       <height>20</height>
+       <height>21</height>
       </rect>
      </property>
      <property name="text">
@@ -1158,8 +310,8 @@
     <widget class="QLabel" name="label_11">
      <property name="geometry">
       <rect>
-       <x>50</x>
-       <y>26</y>
+       <x>120</x>
+       <y>6</y>
        <width>41</width>
        <height>20</height>
       </rect>
@@ -1173,7 +325,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>260</y>
+      <y>210</y>
       <width>351</width>
       <height>391</height>
      </rect>
@@ -1495,7 +647,7 @@
       </property>
       <item>
        <property name="text">
-        <string>µ</string>
+        <string>µ_1</string>
        </property>
        <property name="text">
         <string>0</string>
@@ -1509,7 +661,117 @@
       </item>
       <item>
        <property name="text">
-        <string>τ</string>
+        <string>µ_2</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_3</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_4</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_5</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_6</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_1</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_2</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_3</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_4</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_5</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_6</string>
        </property>
        <property name="text">
         <string>0</string>
@@ -1531,7 +793,7 @@
       </property>
       <item>
        <property name="text">
-        <string>µ</string>
+        <string>µ_1</string>
        </property>
        <property name="text">
         <string>0</string>
@@ -1542,7 +804,117 @@
       </item>
       <item>
        <property name="text">
-        <string>τ</string>
+        <string>µ_2</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_3</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_4</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_5</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_6</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_1</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_2</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_3</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_4</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_5</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_6</string>
        </property>
        <property name="text">
         <string>0</string>
@@ -1564,7 +936,7 @@
       </property>
       <item>
        <property name="text">
-        <string>µ</string>
+        <string>µ_1</string>
        </property>
        <property name="text">
         <string>0</string>
@@ -1575,7 +947,117 @@
       </item>
       <item>
        <property name="text">
-        <string>τ</string>
+        <string>µ_2</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_3</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_4</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_5</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_6</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_1</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_2</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_3</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_4</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_5</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_6</string>
        </property>
        <property name="text">
         <string>0</string>
@@ -1597,7 +1079,7 @@
       </property>
       <item>
        <property name="text">
-        <string>µ</string>
+        <string>µ_1</string>
        </property>
        <property name="text">
         <string>0</string>
@@ -1608,7 +1090,117 @@
       </item>
       <item>
        <property name="text">
-        <string>τ</string>
+        <string>µ_2</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_3</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_4</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_5</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_6</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_1</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_2</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_3</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_4</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_5</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_6</string>
        </property>
        <property name="text">
         <string>0</string>
@@ -1630,7 +1222,7 @@
       </property>
       <item>
        <property name="text">
-        <string>µ</string>
+        <string>µ_1</string>
        </property>
        <property name="text">
         <string>0</string>
@@ -1641,7 +1233,117 @@
       </item>
       <item>
        <property name="text">
-        <string>τ</string>
+        <string>µ_2</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_3</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_4</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_5</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>µ_6</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[%]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_1</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_2</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_3</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_4</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_5</string>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="text">
+        <string>[min]</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>τ_6</string>
        </property>
        <property name="text">
         <string>0</string>
@@ -1669,7 +1371,7 @@
      </property>
      <column>
       <property name="text">
-       <string> </string>
+       <string>     </string>
       </property>
      </column>
     </widget>
@@ -1723,13 +1425,26 @@
      </widget>
     </widget>
    </widget>
+   <widget class="QGroupBox" name="groupBox_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>610</y>
+      <width>351</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1115</width>
+     <width>1118</width>
      <height>21</height>
     </rect>
    </property>
@@ -1790,6 +1505,11 @@
   <action name="actionNew">
    <property name="text">
     <string>New</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionOpen">

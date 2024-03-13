@@ -102,36 +102,21 @@ class Ui(QtWidgets.QMainWindow):
                 system.Initialisation()
                 system.function_TML_fit()  
 
-                self.treeWidget.topLevelItem(0).child(0).setText(1, f'{np.round(system.result_dic["parameter exp"][0][2],3)}')
-                self.treeWidget.topLevelItem(0).child(1).setText(1, f'{np.round(system.result_dic["parameter exp"][0][1],3)}')
-                self.treeWidget.topLevelItem(0).child(2).setText(1, f'{np.round(system.result_dic["parameter exp"][0][0],3)}')
-
-                self.treeWidget.topLevelItem(1).child(0).setText(1, f'{np.round(system.result_dic["parameter exp"][1][2],3)}')
-                self.treeWidget.topLevelItem(1).child(1).setText(1, f'{np.round(system.result_dic["parameter exp"][1][1],3)}')
-                self.treeWidget.topLevelItem(1).child(2).setText(1, f'{np.round(system.result_dic["parameter exp"][1][0],3)}')
-
-                self.treeWidget.topLevelItem(2).child(0).setText(1, f'{np.round(system.result_dic["parameter exp"][2][2],3)}')
-                self.treeWidget.topLevelItem(2).child(1).setText(1, f'{np.round(system.result_dic["parameter exp"][2][1],3)}')
-                self.treeWidget.topLevelItem(2).child(2).setText(1, f'{np.round(system.result_dic["parameter exp"][2][0],3)}')
-
-                self.treeWidget.topLevelItem(3).child(0).setText(1, f'{np.round(system.result_dic["parameter exp"][3][2],3)}')
-                self.treeWidget.topLevelItem(3).child(1).setText(1, f'{np.round(system.result_dic["parameter exp"][3][1],3)}')
-                self.treeWidget.topLevelItem(3).child(2).setText(1, f'{np.round(system.result_dic["parameter exp"][3][0],3)}')
-
-                self.treeWidget.topLevelItem(4).child(0).setText(1, f'{np.round(system.result_dic["parameter exp"][4][2],3)}')
-                self.treeWidget.topLevelItem(4).child(1).setText(1, f'{np.round(system.result_dic["parameter exp"][4][1],3)}')
-                self.treeWidget.topLevelItem(4).child(2).setText(1, f'{np.round(system.result_dic["parameter exp"][4][0],3)}')
+                for ind_i in range(5):
+                    self.treeWidget.topLevelItem(ind_i).child(0).setText(1, f'{np.round(system.result_dic["parameter exp"][ind_i][2],3)}')
+                    self.treeWidget.topLevelItem(ind_i).child(1).setText(1, f'{np.round(system.result_dic["parameter exp"][ind_i][1],3)}')
+                    self.treeWidget.topLevelItem(ind_i).child(2).setText(1, f'{np.round(system.result_dic["parameter exp"][ind_i][0],3)}')
 
                 self.axs_2D[0].cla()
                 self.axs_2D[1].cla()
                 self.axs_2D[1].set_xlabel("Temps [minutes]")
                 self.axs_2D[0].set_ylabel("Perte de masse [%]")
                 self.axs_2D[0].plot(table_data["time_tot"],table_data["mu_tot"],"b", label="data")
-                self.axs_2D[0].plot(table_data["time_tot"],system.result_dic["fitted data 5exp"],"r--", label="prediction n=5 cnes")
+                self.axs_2D[0].plot(table_data["time_tot"],system.result_dic["fitted data 5exp"],"r--", label="prediction CNES")
                 markers = ["s","D","o","x","v"]
                 for ind_i in range(len(system.result_dic["fitted data exp"])):
-                    self.axs_2D[1].plot(table_data["time_tot"][::10],
-                                    system.result_dic["fitted data exp"][ind_i][::10],
+                    self.axs_2D[1].plot(table_data["time_tot"][::2],
+                                    system.result_dic["fitted data exp"][ind_i][::2],
                                     "black",
                                     label=f"Expo {ind_i+1}",
                                     marker=markers[ind_i],
@@ -146,13 +131,11 @@ class Ui(QtWidgets.QMainWindow):
                 self.ax_3D.set_xlabel("Temps [minutes]")
                 self.ax_3D.set_ylabel("ISO [°C]")
                 self.ax_3D.set_zlabel("Perte de masse [%]")
-                for ind_i in range(5):
-                    self.ax_3D.plot(system.result_dic["X_3D"], system.result_dic["Y_3D"][ind_i], system.result_dic["Z_3D"][ind_i,:],"black")
                 self.ax_3D.plot_wireframe(system.result_dic["X_3D_smooth"], 
                                         system.result_dic["Y_3D_smooth"], 
                                         system.result_dic["Z_3D_smooth"], 
-                                        color="b",
-                                        alpha=0.5, 
+                                        color="black", 
+                                        linewidth=1,
                                         antialiased=True)
                 self.canvas_3D.draw()
                 
@@ -163,27 +146,43 @@ class Ui(QtWidgets.QMainWindow):
                 system = Res_ESA.Equations_ESA(table_data, data_expo)
                 system.Initialisation()
                 system.function_TML_fit(n=6)
+
+                for ind_i in range(5):
+                    for ind_j in range(12):
+                        self.treeWidget_2.topLevelItem(ind_i).child(ind_j).setText(1, f'{np.round(system.result_dic["parameter exp"][ind_i][ind_j],8)}')
+
                 self.axs_2D[0].cla()
                 self.axs_2D[1].cla()
                 self.axs_2D[1].set_xlabel("Temps [minutes]")
                 self.axs_2D[0].set_ylabel("Perte de masse [%]")
                 self.axs_2D[0].plot(table_data["time_tot"],table_data["mu_tot"],"b", label="data")
-                self.axs_2D[0].plot(table_data["time_tot_tot"],system.result_dic["fitted data 5exp"],"r--", label="prediction n=5 cnes")
+                self.axs_2D[0].plot(table_data["time_tot_tot"],system.result_dic["fitted data 5exp"],"r--", label="prediction ESA")
                 markers = ["s","D","o","x","v"]
                 for ind_i in range(len(system.result_dic["fitted data exp"])):
-                    self.axs_2D[1].plot(table_data["time"][ind_i][::100],
-                                    system.result_dic["fitted data exp"][ind_i][::100],
-                                    "black",
-                                    label=f"Expo {ind_i+1}",
-                                    markersize=3,
-                                    marker=markers[ind_i],
-                                    linewidth=1)
+                    self.axs_2D[1].plot((np.array(table_data["time_tot_tot"])+(24*60*ind_i))[:24*60*(5-ind_i)][::100],
+                                            system.result_dic["fitted data exp"][ind_i][:24*60*(5-ind_i)][::100],
+                                                        "black",
+                                                        label=f"Expo {ind_i+1}",
+                                                        markersize=3,
+                                                        marker=markers[ind_i],
+                                                        linewidth=1)
                 
                 self.axs_2D[0].legend()
                 self.axs_2D[1].legend()
                 self.axs_2D[0].grid()
                 self.axs_2D[1].grid()
                 self.canvas_2D.draw()
+                self.ax_3D.cla()
+                self.ax_3D.set_xlabel("Temps [minutes]")
+                self.ax_3D.set_ylabel("ISO [°C]")
+                self.ax_3D.set_zlabel("Perte de masse [%]")
+                self.ax_3D.plot_wireframe(system.result_dic["X_3D_smooth"], 
+                                        system.result_dic["Y_3D_smooth"], 
+                                        system.result_dic["Z_3D_smooth"], 
+                                        color="black", 
+                                        linewidth=1,
+                                        antialiased=True)
+                self.canvas_3D.draw()
                 
             #table_data, data_expo = clear_data("L:\Projet_stage\LP_VB5E_3\Données\\EC9323-2.xls")
 

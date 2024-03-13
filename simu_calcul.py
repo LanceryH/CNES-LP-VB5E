@@ -21,8 +21,8 @@ if __name__ == '__main__':
     #self.axs_2D[0].plot(table_data["time_tot_tot"],system.result_dic["fitted data 5exp"],"r--", label="prediction n=5 cnes")
     for ind_i in range(len(system.result_dic["fitted data exp"])):
         plt.plot(table_data["time"][ind_i],table_data["mu_tot_reshaped"][ind_i],"b", label="data")
-        plt.plot(table_data["time"][ind_i],
-                        system.result_dic["fitted data exp"][ind_i],
+        plt.plot((np.array(table_data["time_tot_tot"])+(24*60*ind_i))[:24*60*(5-ind_i)],
+                        system.result_dic["fitted data exp"][ind_i][:24*60*(5-ind_i)],
                         "r--",
                         label=f"Expo {ind_i+1}",
                         linewidth=1)

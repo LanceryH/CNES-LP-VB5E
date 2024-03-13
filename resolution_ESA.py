@@ -20,6 +20,7 @@ class Equations_ESA:
         self.Kelvin_cte = 273.15
         self.m_initial = 14.4708/1000 #g
         self.mu_i_0 = 0 #initial mass that could be potentially be outgassed
+        self.tronq = 40
         self.result_dic = {"parameter exp" : [],
                            "fitted data exp" : [],
                            "X_3D" : [],
@@ -49,13 +50,13 @@ class Equations_ESA:
         # Méthode des moindres carrés
         x0 = self.data_expo["tau"]
         x0.extend(self.data_expo["mi"])
-        print(x0)
 
         for ind_i in range(5):
             params_lsq = np.absolute(leastsq(self.objective, x0, args=(ind_i), maxfev=2000)[0])
             exp_i = self.function_TML(*params_lsq, time=self.table_data["time_tot_reshaped"][ind_i])
+            exp_o = self.function_TML(*params_lsq, time=self.table_data["time_tot_tot"])
             self.result_dic["parameter exp"].append(params_lsq)
-            self.result_dic["fitted data exp"].append(exp_i) 
+            self.result_dic["fitted data exp"].append(exp_o) 
             self.result_dic["fitted data 5exp"].extend(exp_i+self.table_data["mu"][ind_i][0])
 
         d_m_T2 = (exp_i[-1] - exp_i[-2])/(self.table_data["time"][1][-1] - self.table_data["time"][1][0])
@@ -63,6 +64,31 @@ class Equations_ESA:
         ka = d_m_T2/d_m_T1
         Ea = np.log(ka)*self.R*self.table_data["temp"][0][0]*self.table_data["temp"][1][0]/(self.table_data["temp"][1][0]-self.table_data["temp"][0][0])
 
+        # Enregistrement des data
+        temp = [25,50,75,100,125]
+        precision_3D = 100
+        sum_of_exp = []
+        for ind_i in range(5):
+            integral_of_arr = 0
+            self.result_dic["X_3D"] = self.table_data["time_tot"]
+            self.result_dic["Y_3D"].append(np.ones(len(self.table_data["time_tot"]))*temp[ind_i])
+            for ind_j in range(ind_i+1):
+                integral_of_arr += self.function_TML(*self.result_dic["parameter exp"][ind_j],time=self.table_data["time_tot"]) 
+            sum_of_exp.append(integral_of_arr)    
+        self.result_dic["Z_3D"] = np.array(sum_of_exp)
+
+        # Régression polynomiale ordre 4
+        Z_liss = []
+        for ind_i in range(5*24*60//self.tronq):
+            coeffs = np.polyfit(temp, self.result_dic["Z_3D"][:,ind_i], 4)
+            polynomial = np.poly1d(coeffs)
+            t = np.linspace(min(temp),max(temp),precision_3D)
+            new_v = polynomial(t)
+            Z_liss.append(new_v)
+        self.result_dic["Z_3D_smooth"] = np.array(Z_liss).T
+        xx = self.table_data["time_tot"]
+        yy = np.linspace(min(temp),max(temp),precision_3D)
+        self.result_dic["X_3D_smooth"], self.result_dic["Y_3D_smooth"] = np.meshgrid(xx, yy)
         return 
 
     def objective(self, x, ind_i):
