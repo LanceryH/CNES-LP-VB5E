@@ -5,7 +5,7 @@
 
 ### $$\mu_{(t)}=\sum_{i=1}^{n} \mu_i (1-e^{-dt. k^{(t)}_i}))$$
 
-Ref to 
+Algorithme implémenté: [code Ref.1](https://github.com/LanceryH/Cnes_LP_VB5E/blob/b09f277af6533a65b18a40ce6191ed4f0d6e2bc0/resolution_CNES_M.py#L38C5-L49C19)
 
 ## Prédiction du dégazage méthode MC ESA 
 <img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/22659e6b-770d-4d23-ae27-855e5e59ab9d" alt="drawing" width="50%" height="50%"/>
