@@ -7,8 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>1118</width>
-    <height>751</height>
+    <height>756</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>10</pointsize>
+    <weight>50</weight>
+    <bold>false</bold>
+   </font>
   </property>
   <property name="windowTitle">
    <string>LP_VB5E</string>
@@ -163,7 +170,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>∆t (1 min.)</string>
+        <string>∆t (1 min)</string>
        </property>
       </widget>
      </widget>
@@ -243,29 +250,6 @@
       <property name="title">
        <string/>
       </property>
-      <widget class="QScrollArea" name="scrollArea">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>311</width>
-         <height>131</height>
-        </rect>
-       </property>
-       <property name="widgetResizable">
-        <bool>true</bool>
-       </property>
-       <widget class="QWidget" name="scrollAreaWidgetContents">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>309</width>
-          <height>129</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
      </widget>
     </widget>
    </widget>
@@ -300,7 +284,7 @@
        <x>80</x>
        <y>6</y>
        <width>41</width>
-       <height>21</height>
+       <height>20</height>
       </rect>
      </property>
      <property name="text">
@@ -327,7 +311,7 @@
       <x>10</x>
       <y>210</y>
       <width>351</width>
-      <height>391</height>
+      <height>461</height>
      </rect>
     </property>
     <property name="title">
@@ -339,13 +323,13 @@
        <x>10</x>
        <y>10</y>
        <width>331</width>
-       <height>371</height>
+       <height>441</height>
       </rect>
      </property>
      <property name="maximumSize">
       <size>
-       <width>331</width>
-       <height>371</height>
+       <width>600</width>
+       <height>800</height>
       </size>
      </property>
      <column>
@@ -602,13 +586,19 @@
        <x>10</x>
        <y>10</y>
        <width>331</width>
-       <height>371</height>
+       <height>441</height>
       </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
      <property name="maximumSize">
       <size>
-       <width>331</width>
-       <height>371</height>
+       <width>600</width>
+       <height>800</height>
       </size>
      </property>
      <column>
@@ -647,139 +637,180 @@
       </property>
       <item>
        <property name="text">
-        <string>µ_1</string>
+        <string>µ</string>
        </property>
        <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-       <property name="textAlignment">
-        <set>AlignLeading|AlignVCenter</set>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_2</string>
-       </property>
-       <property name="text">
-        <string>0</string>
+        <string/>
        </property>
        <property name="text">
         <string>[%]</string>
        </property>
+       <item>
+        <property name="text">
+         <string>µ_1</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="textAlignment">
+         <set>AlignLeading|AlignVCenter</set>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_2</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_3</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_4</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_5</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_6</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
       </item>
       <item>
        <property name="text">
-        <string>µ_3</string>
+        <string>τ</string>
        </property>
        <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_4</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_5</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_6</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_1</string>
-       </property>
-       <property name="text">
-        <string>0</string>
+        <string/>
        </property>
        <property name="text">
         <string>[min]</string>
        </property>
+       <item>
+        <property name="text">
+         <string>τ_1</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_2</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_3</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_4</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_5</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_6</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
       </item>
-      <item>
-       <property name="text">
-        <string>τ_2</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_3</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_4</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_5</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_6</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
+     </item>
+     <item>
+      <property name="text">
+       <string>Ka_1_2</string>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Ea_1_2</string>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+      <property name="text">
+       <string>[cal.mol-1]</string>
+      </property>
      </item>
      <item>
       <property name="text">
@@ -793,136 +824,180 @@
       </property>
       <item>
        <property name="text">
-        <string>µ_1</string>
+        <string>µ</string>
        </property>
        <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_2</string>
-       </property>
-       <property name="text">
-        <string>0</string>
+        <string/>
        </property>
        <property name="text">
         <string>[%]</string>
        </property>
+       <item>
+        <property name="text">
+         <string>µ_1</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_2</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_3</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_4</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_5</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_6</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
       </item>
       <item>
        <property name="text">
-        <string>µ_3</string>
+        <string>τ</string>
        </property>
        <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_4</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_5</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_6</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_1</string>
-       </property>
-       <property name="text">
-        <string>0</string>
+        <string/>
        </property>
        <property name="text">
         <string>[min]</string>
        </property>
+       <item>
+        <property name="text">
+         <string>τ_1</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_2</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_3</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_4</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_5</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_6</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
       </item>
-      <item>
-       <property name="text">
-        <string>τ_2</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_3</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_4</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_5</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_6</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
+     </item>
+     <item>
+      <property name="text">
+       <string>Ka_2_3</string>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Ea_2_3</string>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+      <property name="text">
+       <string>[cal.mol-1]</string>
+      </property>
      </item>
      <item>
       <property name="text">
@@ -936,136 +1011,177 @@
       </property>
       <item>
        <property name="text">
-        <string>µ_1</string>
+        <string>µ</string>
        </property>
        <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_2</string>
-       </property>
-       <property name="text">
-        <string>0</string>
+        <string/>
        </property>
        <property name="text">
         <string>[%]</string>
        </property>
+       <item>
+        <property name="text">
+         <string>µ_1</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_2</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_3</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_4</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_5</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_6</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
       </item>
       <item>
        <property name="text">
-        <string>µ_3</string>
+        <string>τ</string>
        </property>
        <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_4</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_5</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_6</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_1</string>
-       </property>
-       <property name="text">
-        <string>0</string>
+        <string/>
        </property>
        <property name="text">
         <string>[min]</string>
        </property>
+       <item>
+        <property name="text">
+         <string>τ_1</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_2</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_3</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_4</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_5</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_6</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
       </item>
-      <item>
-       <property name="text">
-        <string>τ_2</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_3</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_4</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_5</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_6</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
+     </item>
+     <item>
+      <property name="text">
+       <string>Ka_3_4</string>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Ea_3_4</string>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+      <property name="text">
+       <string>[cal.mol-1]</string>
+      </property>
      </item>
      <item>
       <property name="text">
@@ -1079,136 +1195,177 @@
       </property>
       <item>
        <property name="text">
-        <string>µ_1</string>
+        <string>µ</string>
        </property>
        <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_2</string>
-       </property>
-       <property name="text">
-        <string>0</string>
+        <string/>
        </property>
        <property name="text">
         <string>[%]</string>
        </property>
+       <item>
+        <property name="text">
+         <string>µ_1</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_2</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_3</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_4</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_5</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_6</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
       </item>
       <item>
        <property name="text">
-        <string>µ_3</string>
+        <string>τ</string>
        </property>
        <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_4</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_5</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_6</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_1</string>
-       </property>
-       <property name="text">
-        <string>0</string>
+        <string/>
        </property>
        <property name="text">
         <string>[min]</string>
        </property>
+       <item>
+        <property name="text">
+         <string>τ_1</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_2</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_3</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_4</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_5</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_6</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
       </item>
-      <item>
-       <property name="text">
-        <string>τ_2</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_3</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_4</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_5</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_6</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
+     </item>
+     <item>
+      <property name="text">
+       <string>Ka_4_5</string>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Ea_4_5</string>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+      <property name="text">
+       <string>[cal.mol-1]</string>
+      </property>
      </item>
      <item>
       <property name="text">
@@ -1222,158 +1379,159 @@
       </property>
       <item>
        <property name="text">
-        <string>µ_1</string>
+        <string>µ</string>
        </property>
        <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_2</string>
-       </property>
-       <property name="text">
-        <string>0</string>
+        <string/>
        </property>
        <property name="text">
         <string>[%]</string>
        </property>
+       <item>
+        <property name="text">
+         <string>µ_1</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_2</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_3</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_4</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_5</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>µ_6</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
       </item>
       <item>
        <property name="text">
-        <string>µ_3</string>
+        <string>τ</string>
        </property>
        <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_4</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_5</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>µ_6</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[%]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_1</string>
-       </property>
-       <property name="text">
-        <string>0</string>
+        <string/>
        </property>
        <property name="text">
         <string>[min]</string>
        </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_2</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_3</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_4</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_5</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>τ_6</string>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="text">
-        <string>[min]</string>
-       </property>
+       <item>
+        <property name="text">
+         <string>τ_1</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_2</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_3</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_4</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_5</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>τ_6</string>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
       </item>
      </item>
-    </widget>
-    <widget class="QTreeWidget" name="treeWidget_3">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>331</width>
-       <height>371</height>
-      </rect>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>331</width>
-       <height>371</height>
-      </size>
-     </property>
-     <column>
-      <property name="text">
-       <string>     </string>
-      </property>
-     </column>
     </widget>
    </widget>
    <widget class="QTabWidget" name="tabWidget_2">
@@ -1425,19 +1583,6 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_4">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>610</y>
-      <width>351</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string/>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -1445,18 +1590,25 @@
      <x>0</x>
      <y>0</y>
      <width>1118</width>
-     <height>21</height>
+     <height>29</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuQuitter">
+   <widget class="QMenu" name="menuFichier">
     <property name="title">
      <string>Fichier</string>
     </property>
-    <addaction name="actionNew"/>
+    <property name="toolTipsVisible">
+     <bool>false</bool>
+    </property>
     <addaction name="actionOpen"/>
-    <addaction name="actionRecent"/>
+    <addaction name="actionNew"/>
    </widget>
    <widget class="QMenu" name="menuGraphe">
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
     <property name="title">
      <string>Graphe</string>
     </property>
@@ -1475,8 +1627,9 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionRead_me"/>
    </widget>
-   <addaction name="menuQuitter"/>
+   <addaction name="menuFichier"/>
    <addaction name="menuGraphe"/>
    <addaction name="menuOption"/>
    <addaction name="menuHelp"/>
@@ -1486,40 +1639,81 @@
    <property name="text">
     <string>Affichage Température</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionRafraichir">
    <property name="text">
     <string>Rafraichir</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionImprimer">
    <property name="text">
     <string>Imprimer</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionCopier_Coller">
    <property name="text">
     <string>Copier/Coller</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionNew">
    <property name="text">
-    <string>New</string>
+    <string>Save</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>12</pointsize>
+     <pointsize>10</pointsize>
     </font>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionOpen">
    <property name="text">
     <string>Open</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionRecent">
    <property name="text">
     <string>Recent</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionRead_me">
+   <property name="text">
+    <string>Read.me</string>
    </property>
   </action>
  </widget>
