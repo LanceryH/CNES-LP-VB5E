@@ -87,8 +87,18 @@ class Ui(QtWidgets.QMainWindow):
     def actionRafraichir_fonction(self):
         self.axs_2D[0].cla()
         self.axs_2D[1].cla()
+        self.axs_2D[0].grid()
+        self.axs_2D[1].grid()
+        self.axs_2D[1].set_xlabel("Temps [minutes]")
+        self.axs_2D[0].set_ylabel("Perte de masse [%]")
         self.canvas_2D.draw()
+
         self.ax_3D.cla()
+        self.ax_3D.view_init(elev=13, azim=-127)
+        self.ax_3D.grid()
+        self.ax_3D.set_xlabel("Temps [minutes]")
+        self.ax_3D.set_ylabel("ISO [°C]")
+        self.ax_3D.set_zlabel("Perte de masse [%]")
         self.canvas_3D.draw()
         self.treeWidget_2.hide()
         self.treeWidget.hide()
