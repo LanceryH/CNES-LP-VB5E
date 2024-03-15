@@ -22,10 +22,14 @@ class Ui(QtWidgets.QMainWindow):
         self.path = None
         
         self.treeWidget.expandAll()
-        self.treeWidget.hide()
+        self.treeWidget.show()
         self.treeWidget.setAlternatingRowColors(True)
         self.treeWidget_2.hide()
         self.treeWidget_2.setAlternatingRowColors(True)
+        self.tableWidget.hide()
+        self.tableWidget_on = False
+
+        self.tabWidget.currentChanged.connect(self.tabWidget_fonction)
 
         self.figure_2D, self.axs_2D= plt.subplots(2, 1, sharex=True, gridspec_kw={"height_ratios": [2,1]})#, figsize=(10, 4))
         self.figure_2D.tight_layout()
@@ -40,7 +44,19 @@ class Ui(QtWidgets.QMainWindow):
         self.layout_of_2D.addWidget(self.canvas_2D)
         self.groupBox_11.setLayout(self.layout_of_2D)
 
-        self.figure_3D = plt.figure(2)
+        self.figure_2D_sim, self.axs_2D_sim = plt.subplots(1, 1)#, figsize=(10, 4))
+        self.figure_2D_sim.tight_layout(rect=[0.015, 0, 1, 1])
+        self.axs_2D_sim.grid()
+        self.axs_2D_sim.set_xlabel("Temps [minutes]")
+        self.axs_2D_sim.set_ylabel("Perte de masse [%]")
+        self.canvas_2D_sim = FigureCanvas(self.figure_2D_sim)
+        self.toolbar_2D_sim = NavigationToolbar(self.canvas_2D_sim,self)
+        self.layout_of_2D_sim = QtWidgets.QVBoxLayout()
+        self.layout_of_2D_sim.addWidget(self.toolbar_2D_sim)
+        self.layout_of_2D_sim.addWidget(self.canvas_2D_sim)
+        self.groupBox_14.setLayout(self.layout_of_2D_sim)
+
+        self.figure_3D = plt.figure(3)
         self.ax_3D = self.figure_3D.add_subplot(projection='3d')
         self.figure_3D.tight_layout()
         self.ax_3D.view_init(elev=13, azim=-127)
@@ -68,16 +84,89 @@ class Ui(QtWidgets.QMainWindow):
 
         self.comboBox_7.addItems(["CNES fast", "ESTEC", "CNES"])
         self.comboBox_8.addItems(["Reg. Poly.", ""])
+        self.comboBox_7.currentIndexChanged.connect(self.comboBox_7_fonction)
+
+        self.spinBox_5.setValue(5)
+        self.spinBox_5.valueChanged.connect(self.spinBox_5_fonction)
+        self.spinBox_4.setValue(1)
+        self.spinBox_6.setRange(24*60, 24*60*5)
+        self.spinBox_6.setValue(24*60*int(self.spinBox_5.value()))
+        self.spinBox_8.setValue(0)
+        self.spinBox_8.valueChanged.connect(self.spinBox_8_fonction)
 
         self.show()
-    
+
+    def tableWidget_fonction(self):
+        print("test")
+
+    def spinBox_8_fonction(self):
+        self.tableWidget.setRowCount(int(self.spinBox_8.value()))
+        self.tableWidget.itemChanged.connect(self.tableWidget_fonction)   
+        data = []
+        for ind_i in range(1,int(self.spinBox_8.value())+1):
+            data.append((str(25*ind_i),str(25*(ind_i+1)),str(1000)))
+        for i, (T_init, T_fin, Duree) in enumerate(data):
+            item_T_init = QTableWidgetItem(T_init)
+            item_T_fin = QTableWidgetItem(T_fin)
+            item_Duree = QTableWidgetItem(Duree)
+
+            self.tableWidget.setItem(i, 0, item_T_init)
+            self.tableWidget.setItem(i, 1, item_T_fin)
+            self.tableWidget.setItem(i, 2, item_Duree)
+        self.plot_simulation()
+
+    def plot_simulation(self):    
+        self.axs_2D_sim.cla()
+        self.axs_2D_sim.set_xlabel("Temps [minutes]")
+        self.axs_2D_sim.set_ylabel("Perte de masse [%]")
+        self.axs_2D_sim.plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data")
+        markers = ["s","D","o","x","v"]
+        for ind_i in range(len(self.system.result_dic["fitted data exp"])):
+            print(1)
+        
+        self.axs_2D_sim.legend()
+        self.axs_2D_sim.grid()
+        self.canvas_2D_sim.draw()
+
+
+    def tabWidget_fonction(self):
+        print(self.tabWidget.objectName())
+        if self.tableWidget_on:
+            self.tableWidget_on = False
+            self.tableWidget.hide()
+            if self.comboBox_7.currentText() == "CNES":
+                self.treeWidget.show()
+            if self.comboBox_7.currentText() == "CNES fast":
+                self.treeWidget.show()
+            if self.comboBox_7.currentText() == "ESTEC":
+                self.treeWidget_2.show()
+        else:
+            self.tableWidget_on = True
+            self.tableWidget.show()
+            self.treeWidget_2.hide()
+            self.treeWidget.hide()
+
     def comboBox_7_fonction(self):
-        self.lineEdit_26.setText("TEST")
+        if self.comboBox_7.currentText() == "CNES":
+            self.treeWidget_2.hide()
+            self.tableWidget.hide()
+            self.treeWidget.show()
+        if self.comboBox_7.currentText() == "CNES fast":
+            self.treeWidget_2.hide()
+            self.tableWidget.hide()
+            self.treeWidget.show()
+        if self.comboBox_7.currentText() == "ESTEC":
+            self.treeWidget_2.show()
+            self.tableWidget.hide()
+            self.treeWidget.hide()
 
     def menuNew_fonction(self):
         print("New")
         return
     
+    def spinBox_5_fonction(self):
+        self.spinBox_6.setValue(24*60*int(self.spinBox_5.value()))
+
     def actionAffichage_Temp_rature_fonction(self):
         for ind_i in range(1,6):
             self.axs_2D[0].axvline(x=24*60*ind_i,color="cyan")
@@ -123,30 +212,31 @@ class Ui(QtWidgets.QMainWindow):
         import resolution_ONERA as Res_ONERA
         import resolution_CNES_M as Res_CNES_M
 
-        table_data, data_expo = clear_data(self.path)
         if self.path:
+            self.table_data, self.data_expo = clear_data(self.path)
             if self.comboBox_7.currentText() == "CNES":
                 self.treeWidget_2.hide()
+                self.tableWidget.hide()
                 self.treeWidget.show()
-                system = Res_CNES.Equations_CNES(table_data, data_expo, 5)
-                system.Initialisation()
-                system.function_TML_fit()  
+                self.system = Res_CNES.Equations_CNES(self.table_data, self.data_expo, 5)
+                self.system.Initialisation()
+                self.system.function_TML_fit()  
 
                 for ind_i in range(5):
-                    self.treeWidget.topLevelItem(ind_i).child(0).setText(1, f'{np.round(system.result_dic["parameter_exp"][ind_i][2],3)}')
-                    self.treeWidget.topLevelItem(ind_i).child(1).setText(1, f'{np.round(system.result_dic["parameter_exp"][ind_i][1],3)}')
-                    self.treeWidget.topLevelItem(ind_i).child(2).setText(1, f'{np.round(system.result_dic["parameter_exp"][ind_i][0],3)}')
+                    self.treeWidget.topLevelItem(ind_i).child(0).setText(1, f'{np.round(self.system.result_dic["parameter_exp"][ind_i][2],3)}')
+                    self.treeWidget.topLevelItem(ind_i).child(1).setText(1, f'{np.round(self.system.result_dic["parameter_exp"][ind_i][1],3)}')
+                    self.treeWidget.topLevelItem(ind_i).child(2).setText(1, f'{np.round(self.system.result_dic["parameter_exp"][ind_i][0],3)}')
 
                 self.axs_2D[0].cla()
                 self.axs_2D[1].cla()
                 self.axs_2D[1].set_xlabel("Temps [minutes]")
                 self.axs_2D[0].set_ylabel("Perte de masse [%]")
-                self.axs_2D[0].plot(table_data["time_tot"],table_data["mu_tot"],"b", label="data")
-                self.axs_2D[0].plot(table_data["time_tot"],system.result_dic["fitted data 5exp"],"r--", label="prediction CNES")
+                self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data")
+                self.axs_2D[0].plot(self.table_data["time_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction CNES")
                 markers = ["s","D","o","x","v"]
-                for ind_i in range(len(system.result_dic["fitted data exp"])):
-                    self.axs_2D[1].plot(table_data["time_tot"][::2],
-                                    system.result_dic["fitted data exp"][ind_i][::2],
+                for ind_i in range(len(self.system.result_dic["fitted data exp"])):
+                    self.axs_2D[1].plot(self.table_data["time_tot"][::2],
+                                    self.system.result_dic["fitted data exp"][ind_i][::2],
                                     "black",
                                     label=f"Expo {ind_i+1}",
                                     marker=markers[ind_i],
@@ -161,9 +251,9 @@ class Ui(QtWidgets.QMainWindow):
                 self.ax_3D.set_xlabel("Temps [minutes]")
                 self.ax_3D.set_ylabel("ISO [°C]")
                 self.ax_3D.set_zlabel("Perte de masse [%]")
-                self.ax_3D.plot_wireframe(system.result_dic["X_3D_smooth"], 
-                                        system.result_dic["Y_3D_smooth"], 
-                                        system.result_dic["Z_3D_smooth"], 
+                self.ax_3D.plot_wireframe(self.system.result_dic["X_3D_smooth"], 
+                                        self.system.result_dic["Y_3D_smooth"], 
+                                        self.system.result_dic["Z_3D_smooth"], 
                                         color="black", 
                                         linewidth=1,
                                         antialiased=True)
@@ -171,34 +261,35 @@ class Ui(QtWidgets.QMainWindow):
                 
             if self.comboBox_7.currentText() == "ESTEC":
                 self.treeWidget.hide()
+                self.tableWidget.hide()
                 self.treeWidget_2.show()
-                system = Res_ESA.Equations_ESA(table_data, data_expo)
-                system.Initialisation()
-                system.function_TML_fit(n=6)
+                self.system = Res_ESA.Equations_ESA(self.table_data, self.data_expo)
+                self.system.Initialisation()
+                self.system.function_TML_fit(n=6)
 
                 for ind_i in range(5):
                     for ind_k in range(6):
-                        self.treeWidget_2.topLevelItem(ind_i+ind_i*2).child(1).child(ind_k).setText(1, f'{np.round(system.result_dic["parameter_exp"][ind_i][ind_k],8)}')
-                        self.treeWidget_2.topLevelItem(ind_i+ind_i*2).child(0).child(ind_k).setText(1, f'{np.round(system.result_dic["parameter_exp"][ind_i][ind_k+6],8)}')
-                self.treeWidget_2.topLevelItem(1).setText(1, f'{np.round(system.result_dic["coeff_transition"][0][0],8)}')
-                self.treeWidget_2.topLevelItem(2).setText(1, f'{np.round(system.result_dic["coeff_transition"][0][1],8)}')
-                self.treeWidget_2.topLevelItem(4).setText(1, f'{np.round(system.result_dic["coeff_transition"][1][0],8)}')
-                self.treeWidget_2.topLevelItem(5).setText(1, f'{np.round(system.result_dic["coeff_transition"][1][1],8)}')
-                self.treeWidget_2.topLevelItem(7).setText(1, f'{np.round(system.result_dic["coeff_transition"][2][0],8)}')
-                self.treeWidget_2.topLevelItem(8).setText(1, f'{np.round(system.result_dic["coeff_transition"][2][1],8)}')
-                self.treeWidget_2.topLevelItem(10).setText(1, f'{np.round(system.result_dic["coeff_transition"][3][0],8)}')
-                self.treeWidget_2.topLevelItem(11).setText(1, f'{np.round(system.result_dic["coeff_transition"][3][1],8)}')
+                        self.treeWidget_2.topLevelItem(ind_i+ind_i*2).child(1).child(ind_k).setText(1, f'{np.round(self.system.result_dic["parameter_exp"][ind_i][ind_k],8)}')
+                        self.treeWidget_2.topLevelItem(ind_i+ind_i*2).child(0).child(ind_k).setText(1, f'{np.round(self.system.result_dic["parameter_exp"][ind_i][ind_k+6],8)}')
+                self.treeWidget_2.topLevelItem(1).setText(1, f'{np.round(self.system.result_dic["coeff_transition"][0][0],8)}')
+                self.treeWidget_2.topLevelItem(2).setText(1, f'{np.round(self.system.result_dic["coeff_transition"][0][1],8)}')
+                self.treeWidget_2.topLevelItem(4).setText(1, f'{np.round(self.system.result_dic["coeff_transition"][1][0],8)}')
+                self.treeWidget_2.topLevelItem(5).setText(1, f'{np.round(self.system.result_dic["coeff_transition"][1][1],8)}')
+                self.treeWidget_2.topLevelItem(7).setText(1, f'{np.round(self.system.result_dic["coeff_transition"][2][0],8)}')
+                self.treeWidget_2.topLevelItem(8).setText(1, f'{np.round(self.system.result_dic["coeff_transition"][2][1],8)}')
+                self.treeWidget_2.topLevelItem(10).setText(1, f'{np.round(self.system.result_dic["coeff_transition"][3][0],8)}')
+                self.treeWidget_2.topLevelItem(11).setText(1, f'{np.round(self.system.result_dic["coeff_transition"][3][1],8)}')
 
                 self.axs_2D[0].cla()
                 self.axs_2D[1].cla()
                 self.axs_2D[1].set_xlabel("Temps [minutes]")
                 self.axs_2D[0].set_ylabel("Perte de masse [%]")
-                self.axs_2D[0].plot(table_data["time_tot"],table_data["mu_tot"],"b", label="data")
-                self.axs_2D[0].plot(table_data["time_tot_tot"],system.result_dic["fitted data 5exp"],"r--", label="prediction ESA")
+                self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data")
+                self.axs_2D[0].plot(self.table_data["time_tot_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction ESA")
                 markers = ["s","D","o","x","v"]
-                for ind_i in range(len(system.result_dic["fitted data exp"])):
-                    self.axs_2D[1].plot((np.array(table_data["time_tot_tot"])+(24*60*ind_i))[:24*60*(5-ind_i)][::100],
-                                            system.result_dic["fitted data exp"][ind_i][:24*60*(5-ind_i)][::100],
+                for ind_i in range(len(self.system.result_dic["fitted data exp"])):
+                    self.axs_2D[1].plot((np.array(self.table_data["time_tot_tot"])+(24*60*ind_i))[:24*60*(5-ind_i)][::100],
+                                            self.system.result_dic["fitted data exp"][ind_i][:24*60*(5-ind_i)][::100],
                                                         "black",
                                                         label=f"Expo {ind_i+1}",
                                                         markersize=3,
@@ -214,9 +305,9 @@ class Ui(QtWidgets.QMainWindow):
                 self.ax_3D.set_xlabel("Temps [minutes]")
                 self.ax_3D.set_ylabel("ISO [°C]")
                 self.ax_3D.set_zlabel("Perte de masse [%]")
-                self.ax_3D.plot_wireframe(system.result_dic["X_3D_smooth"], 
-                                        system.result_dic["Y_3D_smooth"], 
-                                        system.result_dic["Z_3D_smooth"], 
+                self.ax_3D.plot_wireframe(self.system.result_dic["X_3D_smooth"], 
+                                        self.system.result_dic["Y_3D_smooth"], 
+                                        self.system.result_dic["Z_3D_smooth"], 
                                         color="black", 
                                         linewidth=1,
                                         antialiased=True)
@@ -224,26 +315,27 @@ class Ui(QtWidgets.QMainWindow):
             
             if self.comboBox_7.currentText() == "CNES fast":
                 self.treeWidget_2.hide()
+                self.tableWidget.hide()
                 self.treeWidget.show()
-                system = Res_CNES_M.Equations_CNES_M(table_data, data_expo)
-                system.Initialisation()
-                system.function_TML_fit()  
+                self.system = Res_CNES_M.Equations_CNES_M(self.table_data, self.data_expo)
+                self.system.Initialisation()
+                self.system.function_TML_fit()  
 
                 for ind_i in range(5):
-                    self.treeWidget.topLevelItem(ind_i).child(0).setText(1, f'{np.round(system.result_dic["parameter_exp"][ind_i][2],3)}')
-                    self.treeWidget.topLevelItem(ind_i).child(1).setText(1, f'{np.round(system.result_dic["parameter_exp"][ind_i][1],3)}')
-                    self.treeWidget.topLevelItem(ind_i).child(2).setText(1, f'{np.round(system.result_dic["parameter_exp"][ind_i][0],3)}')
+                    self.treeWidget.topLevelItem(ind_i).child(0).setText(1, f'{np.round(self.system.result_dic["parameter_exp"][ind_i][2],3)}')
+                    self.treeWidget.topLevelItem(ind_i).child(1).setText(1, f'{np.round(self.system.result_dic["parameter_exp"][ind_i][1],3)}')
+                    self.treeWidget.topLevelItem(ind_i).child(2).setText(1, f'{np.round(self.system.result_dic["parameter_exp"][ind_i][0],3)}')
 
                 self.axs_2D[0].cla()
                 self.axs_2D[1].cla()
                 self.axs_2D[1].set_xlabel("Temps [minutes]")
                 self.axs_2D[0].set_ylabel("Perte de masse [%]")
-                self.axs_2D[0].plot(table_data["time_tot"],table_data["mu_tot"],"b", label="data")
-                self.axs_2D[0].plot(table_data["time_tot_tot"],system.result_dic["fitted data 5exp"],"r--", label="prediction CNES")
+                self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data")
+                self.axs_2D[0].plot(self.table_data["time_tot_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction CNES")
                 markers = ["s","D","o","x","v"]
-                for ind_i in range(len(system.result_dic["fitted data exp"])):
-                    self.axs_2D[1].plot((np.array(table_data["time_tot_tot"])+(24*60*ind_i))[:24*60*(5-ind_i)][::100],
-                                            system.result_dic["fitted data exp"][ind_i][:24*60*(5-ind_i)][::100],
+                for ind_i in range(len(self.system.result_dic["fitted data exp"])):
+                    self.axs_2D[1].plot((np.array(self.table_data["time_tot_tot"])+(24*60*ind_i))[:24*60*(5-ind_i)][::100],
+                                            self.system.result_dic["fitted data exp"][ind_i][:24*60*(5-ind_i)][::100],
                                                         "black",
                                                         label=f"Expo {ind_i+1}",
                                                         markersize=3,
@@ -259,9 +351,9 @@ class Ui(QtWidgets.QMainWindow):
                 self.ax_3D.set_xlabel("Temps [minutes]")
                 self.ax_3D.set_ylabel("ISO [°C]")
                 self.ax_3D.set_zlabel("Perte de masse [%]")
-                self.ax_3D.plot_wireframe(system.result_dic["X_3D_smooth"], 
-                                        system.result_dic["Y_3D_smooth"], 
-                                        system.result_dic["Z_3D_smooth"], 
+                self.ax_3D.plot_wireframe(self.system.result_dic["X_3D_smooth"], 
+                                        self.system.result_dic["Y_3D_smooth"], 
+                                        self.system.result_dic["Z_3D_smooth"], 
                                         color="black", 
                                         linewidth=1,
                                         antialiased=True)

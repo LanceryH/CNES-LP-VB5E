@@ -63,11 +63,11 @@ class Equations_ESA:
             self.result_dic["fitted data 5exp"].extend(exp_i+self.table_data["mu"][ind_i][0])
         #plt.figure()
         for ind_i in range(4):
-            d_m_2 = self.result_dic["fitted data exp small"][ind_i+1][100] - self.result_dic["fitted data exp small"][ind_i+1][0]
-            d_T_2 = self.table_data["time_tot_reshaped"][ind_i+1][100] - self.table_data["time_tot_reshaped"][ind_i+1][0]
+            d_m_2 = self.result_dic["fitted data exp small"][ind_i+1][10] - self.result_dic["fitted data exp small"][ind_i+1][0]
+            d_T_2 = self.table_data["time_tot_reshaped"][ind_i+1][10] - self.table_data["time_tot_reshaped"][ind_i+1][0]
             
-            d_m_1 = self.result_dic["fitted data exp small"][ind_i][-1] - self.result_dic["fitted data exp small"][ind_i][-100]
-            d_T_1 = self.table_data["time_tot_reshaped"][ind_i][-1] - self.table_data["time_tot_reshaped"][ind_i][-100]
+            d_m_1 = self.result_dic["fitted data exp small"][ind_i][-1] - self.result_dic["fitted data exp small"][ind_i][-10]
+            d_T_1 = self.table_data["time_tot_reshaped"][ind_i][-1] - self.table_data["time_tot_reshaped"][ind_i][-10]
 
             ka = (d_m_2/d_T_2)/(d_m_1/d_T_1)
             Ea = np.log(ka)*self.R*self.table_data["time"][ind_i][2]*self.table_data["temp"][ind_i][2]/(self.table_data["temp"][ind_i+1][2]-self.table_data["temp"][ind_i][2])
