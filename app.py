@@ -81,6 +81,7 @@ class Ui(QtWidgets.QMainWindow):
         self.actionRead_me.triggered.connect(self.actionRead_me_fonction)
         self.pushButton.clicked.connect(self.pushButton_fonction)
         self.pushButton_2.clicked.connect(self.pushButton_2_fonction)
+        self.pushButton_3.clicked.connect(self.pushButton_3_fonction)
 
         self.comboBox_7.addItems(["CNES fast", "ESTEC", "CNES"])
         self.comboBox_8.addItems(["Reg. Poly.", ""])
@@ -97,15 +98,41 @@ class Ui(QtWidgets.QMainWindow):
         self.show()
 
     def tableWidget_fonction(self):
-        print("test")
+        return
+
+    def pushButton_3_fonction(self):
+        self.axs_2D_sim.cla()
+        self.axs_2D_sim.set_xlabel("Temps [minutes]")
+        self.axs_2D_sim.set_ylabel("Perte de masse [%]")
+        result_simu = []
+        t_tot = 0
+        for ind_i in range(len(self.data)):
+            tf = int(self.tableWidget.item(ind_i,2).text())
+            time = np.linspace(0,tf,tf)
+            temp = np.linspace(int(self.tableWidget.item(ind_i,0).text()),int(self.tableWidget.item(ind_i,1).text()),tf)
+            t_tot += tf
+
+            result_palier=[]
+            for ind_j in range(len(temp)):
+                result_expo=0
+                
+                for ind_k in range(5):
+                    result_expo+=self.system.function_TML_simmu(self.system.result_dic["parameter_exp"][ind_k],time=time[ind_j],temp=temp[ind_j])
+                result_palier.append(result_expo)
+            result_simu.extend(result_palier)
+        self.axs_2D_sim.plot(np.linspace(0,t_tot,t_tot),result_simu,"b", label="data")
+
+        self.axs_2D_sim.legend()
+        self.axs_2D_sim.grid()
+        self.canvas_2D_sim.draw()
 
     def spinBox_8_fonction(self):
         self.tableWidget.setRowCount(int(self.spinBox_8.value()))
         self.tableWidget.itemChanged.connect(self.tableWidget_fonction)   
-        data = []
+        self.data = []
         for ind_i in range(1,int(self.spinBox_8.value())+1):
-            data.append((str(25*ind_i),str(25*(ind_i+1)),str(1000)))
-        for i, (T_init, T_fin, Duree) in enumerate(data):
+            self.data.append((str(25*ind_i),str(25*ind_i),str(1400)))
+        for i, (T_init, T_fin, Duree) in enumerate(self.data):
             item_T_init = QTableWidgetItem(T_init)
             item_T_fin = QTableWidgetItem(T_fin)
             item_Duree = QTableWidgetItem(Duree)
@@ -113,24 +140,11 @@ class Ui(QtWidgets.QMainWindow):
             self.tableWidget.setItem(i, 0, item_T_init)
             self.tableWidget.setItem(i, 1, item_T_fin)
             self.tableWidget.setItem(i, 2, item_Duree)
-        self.plot_simulation()
 
-    def plot_simulation(self):    
-        self.axs_2D_sim.cla()
-        self.axs_2D_sim.set_xlabel("Temps [minutes]")
-        self.axs_2D_sim.set_ylabel("Perte de masse [%]")
-        self.axs_2D_sim.plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data")
-        markers = ["s","D","o","x","v"]
-        for ind_i in range(len(self.system.result_dic["fitted data exp"])):
-            print(1)
-        
-        self.axs_2D_sim.legend()
-        self.axs_2D_sim.grid()
-        self.canvas_2D_sim.draw()
+
 
 
     def tabWidget_fonction(self):
-        print(self.tabWidget.objectName())
         if self.tableWidget_on:
             self.tableWidget_on = False
             self.tableWidget.hide()

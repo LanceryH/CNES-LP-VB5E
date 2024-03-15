@@ -72,6 +72,14 @@ class Equations_CNES:
                 sum[j] += We
                 mu_t[i] = sum[j]
         return mu_t
+
+    def function_TML_simmu(self, *params, time, temp):
+        A_s = params[0][0]
+        E_s = params[0][1]
+        mi_s = params[0][2]
+        k_i = A_s*np.exp(-E_s/(self.R_cte*temp))
+        mu_t = mi_s*(1-np.exp(-1*time*k_i))
+        return mu_t
         
     def function_TML_fit(self):
                 

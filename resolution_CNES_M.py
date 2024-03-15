@@ -44,10 +44,17 @@ class Equations_CNES_M:
 
         for j in range(1):
             k_i_t = A_s[j]*np.exp(-E_s[j]/(self.R_cte*temp))
-            sum += (mi_s[0])*(1-np.exp(-np.array(time)*k_i_t))
-
+            sum += (mi_s[j])*(1-np.exp(-np.array(time)*k_i_t))
         return sum
 
+    def function_TML_simmu(self, *params, time, temp):
+        A_s = params[0][0]
+        E_s = params[0][1]
+        mi_s = params[0][2]
+        k_i = A_s*np.exp(-E_s/(self.R_cte*temp))
+        mu_t = mi_s*(1-np.exp(-1*time*k_i))
+        return mu_t
+    
     def function_TML_fit(self):
         "As,Es,ms"
 
