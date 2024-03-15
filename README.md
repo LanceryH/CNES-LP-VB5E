@@ -8,7 +8,7 @@ nombre d'exponentielles $n=5$
 ### $$k^{(t)}_i = A_i e^{\frac{E_i}{RT^{(t)}}}$$
 ### $$\mu^{(t)}=\sum_{i=1}^{n} \int_{t_0}^{t}\mu_i (1-e^{-dt. k^{(t)}_i})$$
 
-L'algorithme conciste à miniser l'erreur de la fonction (moindres carrées) en ajustant les paramètres suivant la méthode des gradients
+L'algorithme consiste à minimiser l'erreur de la fonction (moindres carrées) en ajustant les paramètres suivant la méthode des gradients
 
 Chaque palier de température de la cinétique se voit attribué une espèce chimique approximé par une exponentielle
 
