@@ -8,7 +8,9 @@ nombre d'exponentielles $n=5$
 ### $$k^{(t)}_i = A_i e^{\frac{E_i}{RT^{(t)}}}$$
 ### $$\mu^{(t)}=\sum_{i=1}^{n} \int_{t_0}^{t}\mu_i (1-e^{-dt. k^{(t)}_i})$$
 
-L'algorithme consiste à minimiser l'erreur de la fonction (moindre carré) en ajustant les paramètres suivant la minimisation 
+L'algorithme consiste à minimiser l'erreur de la fonction (moindre carré) en ajustant les paramètres 
+
+suivant l'approximation jacobienne de la fonction objectif hessienne des moindres carrés
 
 Chaque palier de température de la cinétique se voit attribué une espèce chimique approximé par une exponentielle
 
@@ -70,7 +72,7 @@ L'algorithme est trés sensible aux paramètres initiaux (gradient qui ne conver
 Initialisation des paramètres [code Ref.4](https://github.com/LanceryH/Cnes_LP_VB5E/blob/cab1dc12d166c8ba1ab3f4c076725c6f098306b8/resolution_CNES_M.py#L32C5-L36C44)
 
 -----
-<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/c809cb9b-ffea-4719-90ca-2823a25a7d4f" alt="drawing" width="50%" height="50%"/>
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/c809cb9b-ffea-4719-90ca-2823a25a7d4f" alt="drawing" width="70%" height="70%"/>
 
 -----
 ## Prédiction du dégazage méthode MC ESA 
@@ -89,8 +91,8 @@ L'algorithme conciste à miniser l'erreur de la fonction (moindres carrées) en 
 Chaque palier de température de la cinétique se voit attribué une espèce chimique approximé par une exponentielle
 
 ----
-<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/22659e6b-770d-4d23-ae27-855e5e59ab9d" alt="drawing" width="50%" height="50%"/>
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/22659e6b-770d-4d23-ae27-855e5e59ab9d" alt="drawing" width="70%" height="70%"/>
 
 ## Régression polynomiale du maillage
-<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/f837df3a-7439-4373-a00c-1876256ed137" alt="drawing" width="50%" height="50%"/>
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/f837df3a-7439-4373-a00c-1876256ed137" alt="drawing" width="70%" height="70%"/>
 
