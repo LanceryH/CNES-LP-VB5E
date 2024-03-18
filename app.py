@@ -104,7 +104,7 @@ class Ui(QtWidgets.QMainWindow):
         self.axs_2D_sim.cla()
         self.axs_2D_sim.set_xlabel("Temps [minutes]")
         self.axs_2D_sim.set_ylabel("Perte de masse [%]")
-        result_simu = []
+        result_simu = [0]
         t_tot = 0
         for ind_i in range(len(self.data)):
             tf = int(self.tableWidget.item(ind_i,2).text())
@@ -116,11 +116,22 @@ class Ui(QtWidgets.QMainWindow):
             for ind_j in range(len(temp)):
                 result_expo=0
                 
-                for ind_k in range(5):
+                for ind_k in range(ind_i,5):
                     result_expo+=self.system.function_TML_simmu(self.system.result_dic["parameter_exp"][ind_k],time=time[ind_j],temp=temp[ind_j])
+
+                #if result_expo>result_simu[-1]:
+                 
                 result_palier.append(result_expo)
-            result_simu.extend(result_palier)
-        self.axs_2D_sim.plot(np.linspace(0,t_tot,t_tot),result_simu,"b", label="data")
+            result_palier = np.array(result_palier)
+            if ind_i==0:
+                result_simu.extend(np.array(result_palier))
+            else:
+                for ind_m in range(ind_i):
+                    result_palier += self.system.function_TML_simmu(self.system.result_dic["parameter_exp"][ind_m],time=24*60*(ind_i+1),temp=temp[ind_m])
+                result_simu.extend(result_palier)
+        result_simu.pop(0)
+        self.axs_2D_sim.plot(np.linspace(0,t_tot,len(result_simu)),result_simu,"r", label="simu")
+        self.axs_2D_sim.plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data")
 
         self.axs_2D_sim.legend()
         self.axs_2D_sim.grid()
@@ -131,7 +142,7 @@ class Ui(QtWidgets.QMainWindow):
         self.tableWidget.itemChanged.connect(self.tableWidget_fonction)   
         self.data = []
         for ind_i in range(1,int(self.spinBox_8.value())+1):
-            self.data.append((str(25*ind_i),str(25*ind_i),str(1400)))
+            self.data.append((str(25*ind_i),str(25*ind_i),str(1440)))
         for i, (T_init, T_fin, Duree) in enumerate(self.data):
             item_T_init = QTableWidgetItem(T_init)
             item_T_fin = QTableWidgetItem(T_fin)
