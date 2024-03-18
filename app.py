@@ -79,19 +79,14 @@ class Ui(QtWidgets.QMainWindow):
         self.actionAffichage_Temp_rature.triggered.connect(self.actionAffichage_Temp_rature_fonction)
         self.actionRafraichir.triggered.connect(self.actionRafraichir_fonction)
         self.actionRead_me.triggered.connect(self.actionRead_me_fonction)
-        self.pushButton.clicked.connect(self.pushButton_fonction)
+        self.pushButton_5.clicked.connect(self.pushButton_5_fonction)
         self.pushButton_2.clicked.connect(self.pushButton_2_fonction)
-        self.pushButton_3.clicked.connect(self.pushButton_3_fonction)
+        self.pushButton_6.clicked.connect(self.pushButton_6_fonction)
 
         self.comboBox_7.addItems(["CNES fast", "ESTEC", "CNES"])
         self.comboBox_8.addItems(["Reg. Poly.", ""])
         self.comboBox_7.currentIndexChanged.connect(self.comboBox_7_fonction)
 
-        self.spinBox_5.setValue(5)
-        self.spinBox_5.valueChanged.connect(self.spinBox_5_fonction)
-        self.spinBox_4.setValue(1)
-        self.spinBox_6.setRange(24*60, 24*60*5)
-        self.spinBox_6.setValue(24*60*int(self.spinBox_5.value()))
         self.spinBox_8.setValue(0)
         self.spinBox_8.valueChanged.connect(self.spinBox_8_fonction)
 
@@ -100,38 +95,53 @@ class Ui(QtWidgets.QMainWindow):
     def tableWidget_fonction(self):
         return
 
-    def pushButton_3_fonction(self):
-        self.axs_2D_sim.cla()
-        self.axs_2D_sim.set_xlabel("Temps [minutes]")
-        self.axs_2D_sim.set_ylabel("Perte de masse [%]")
-        result_simu = [0]
-        t_tot = 0
-        for ind_i in range(len(self.data)):
-            tf = int(self.tableWidget.item(ind_i,2).text())
-            time = np.linspace(0,tf,tf)
-            temp = np.linspace(int(self.tableWidget.item(ind_i,0).text()),int(self.tableWidget.item(ind_i,1).text()),tf)
-            t_tot += tf
+    def pushButton_6_fonction(self):
+        if self.comboBox_7.currentText() != "ESTEC":
+            self.axs_2D_sim.cla()
+            self.axs_2D_sim.set_xlabel("Temps [minutes]")
+            self.axs_2D_sim.set_ylabel("Perte de masse [%]")
+            result_simu = [0]
+            t_tot = 0
+            for ind_i in range(len(self.data)):
+                tf = int(self.tableWidget.item(ind_i,2).text())
+                time = np.linspace(0,tf,tf)
+                temp = np.linspace(int(self.tableWidget.item(ind_i,0).text()),int(self.tableWidget.item(ind_i,1).text()),tf)
+                t_tot += tf
 
-            result_palier=[]
-            for ind_j in range(len(temp)):
-                result_expo=0
-                
-                for ind_k in range(ind_i,5):
-                    result_expo+=self.system.function_TML_simmu(self.system.result_dic["parameter_exp"][ind_k],time=time[ind_j],temp=temp[ind_j])
+                result_palier=[]
+                for ind_j in range(len(temp)):
+                    result_expo=0
+                    
+                    for ind_k in range(5):
+                        result_expo+=self.system.function_TML_simmu(self.system.result_dic["parameter_exp"][ind_k],time=time[ind_j],temp=temp[ind_j])
 
-                #if result_expo>result_simu[-1]:
-                 
-                result_palier.append(result_expo)
-            result_palier = np.array(result_palier)
-            if ind_i==0:
-                result_simu.extend(np.array(result_palier))
-            else:
-                for ind_m in range(ind_i):
-                    result_palier += self.system.function_TML_simmu(self.system.result_dic["parameter_exp"][ind_m],time=24*60*(ind_i+1),temp=temp[ind_m])
+                    if result_expo>result_simu[-1]:
+                        result_palier.append(result_expo)
+
                 result_simu.extend(result_palier)
-        result_simu.pop(0)
-        self.axs_2D_sim.plot(np.linspace(0,t_tot,len(result_simu)),result_simu,"r", label="simu")
-        self.axs_2D_sim.plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data")
+            result_simu.pop(0)
+            self.axs_2D_sim.plot(np.linspace(0,t_tot,len(result_simu)),result_simu,"black", label="simu",linewidth=1)
+        else:
+            self.axs_2D_sim.cla()
+            self.axs_2D_sim.set_xlabel("Temps [minutes]")
+            self.axs_2D_sim.set_ylabel("Perte de masse [%]")
+            result_simu = [0]
+            t_tot = 0
+            for ind_i in range(len(self.data)):
+                tf = int(self.tableWidget.item(ind_i,2).text())
+                time = np.linspace(0,tf,tf)
+                temp = np.linspace(int(self.tableWidget.item(ind_i,0).text()),int(self.tableWidget.item(ind_i,1).text()),tf)
+                t_tot += tf
+
+                result_palier=[]
+                for ind_j in range(len(temp)):                    
+                    result_palier.append(self.system.function_TML_simmu(list(self.system.result_dic["parameter_exp"][ind_i]),time=time[ind_j],temp=temp[ind_j],Tref=temp[0]))
+
+                result_simu.extend(np.array(result_palier)+result_simu[-1])
+            result_simu.pop(0)
+            self.axs_2D_sim.plot(np.linspace(0,t_tot,len(result_simu)),result_simu,"black", label="simu",linewidth=1)
+        self.axs_2D_sim.legend()
+        #self.axs_2D_sim.plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data")
 
         self.axs_2D_sim.legend()
         self.axs_2D_sim.grid()
@@ -188,9 +198,6 @@ class Ui(QtWidgets.QMainWindow):
     def menuNew_fonction(self):
         print("New")
         return
-    
-    def spinBox_5_fonction(self):
-        self.spinBox_6.setValue(24*60*int(self.spinBox_5.value()))
 
     def actionAffichage_Temp_rature_fonction(self):
         for ind_i in range(1,6):
@@ -231,7 +238,7 @@ class Ui(QtWidgets.QMainWindow):
         print("Recent")
         return
             
-    def pushButton_fonction(self):
+    def pushButton_5_fonction(self):
         import resolution_CNES as Res_CNES
         import resolution_ESA as Res_ESA
         import resolution_ONERA as Res_ONERA
@@ -256,19 +263,19 @@ class Ui(QtWidgets.QMainWindow):
                 self.axs_2D[1].cla()
                 self.axs_2D[1].set_xlabel("Temps [minutes]")
                 self.axs_2D[0].set_ylabel("Perte de masse [%]")
-                self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data")
-                self.axs_2D[0].plot(self.table_data["time_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction CNES")
+                self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data", linewidth=1)
+                self.axs_2D[0].plot(self.table_data["time_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction CNES", linewidth=1)
                 markers = ["s","D","o","x","v"]
                 for ind_i in range(len(self.system.result_dic["fitted data exp"])):
                     self.axs_2D[1].plot(self.table_data["time_tot"][::2],
                                     self.system.result_dic["fitted data exp"][ind_i][::2],
                                     "black",
                                     label=f"Expo {ind_i+1}",
-                                    marker=markers[ind_i],
-                                    markersize=3,
+                                    #marker=markers[ind_i],
+                                    markersize=2,
                                     linewidth=1)
                 self.axs_2D[0].legend()
-                self.axs_2D[1].legend()
+                #self.axs_2D[1].legend()
                 self.axs_2D[0].grid()
                 self.axs_2D[1].grid()
                 self.canvas_2D.draw()
@@ -309,20 +316,20 @@ class Ui(QtWidgets.QMainWindow):
                 self.axs_2D[1].cla()
                 self.axs_2D[1].set_xlabel("Temps [minutes]")
                 self.axs_2D[0].set_ylabel("Perte de masse [%]")
-                self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data")
-                self.axs_2D[0].plot(self.table_data["time_tot_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction ESA")
+                self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data", linewidth=1)
+                self.axs_2D[0].plot(self.table_data["time_tot_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction ESA", linewidth=1)
                 markers = ["s","D","o","x","v"]
                 for ind_i in range(len(self.system.result_dic["fitted data exp"])):
                     self.axs_2D[1].plot((np.array(self.table_data["time_tot_tot"])+(24*60*ind_i))[:24*60*(5-ind_i)][::100],
                                             self.system.result_dic["fitted data exp"][ind_i][:24*60*(5-ind_i)][::100],
                                                         "black",
                                                         label=f"Expo {ind_i+1}",
-                                                        markersize=3,
-                                                        marker=markers[ind_i],
+                                                        markersize=2,
+                                                        #marker=markers[ind_i],
                                                         linewidth=1)
                 
                 self.axs_2D[0].legend()
-                self.axs_2D[1].legend()
+                #self.axs_2D[1].legend()
                 self.axs_2D[0].grid()
                 self.axs_2D[1].grid()
                 self.canvas_2D.draw()
@@ -355,20 +362,20 @@ class Ui(QtWidgets.QMainWindow):
                 self.axs_2D[1].cla()
                 self.axs_2D[1].set_xlabel("Temps [minutes]")
                 self.axs_2D[0].set_ylabel("Perte de masse [%]")
-                self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data")
-                self.axs_2D[0].plot(self.table_data["time_tot_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction CNES")
+                self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data", linewidth=1)
+                self.axs_2D[0].plot(self.table_data["time_tot_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction CNES", linewidth=1)
                 markers = ["s","D","o","x","v"]
                 for ind_i in range(len(self.system.result_dic["fitted data exp"])):
                     self.axs_2D[1].plot((np.array(self.table_data["time_tot_tot"])+(24*60*ind_i))[:24*60*(5-ind_i)][::100],
                                             self.system.result_dic["fitted data exp"][ind_i][:24*60*(5-ind_i)][::100],
                                                         "black",
                                                         label=f"Expo {ind_i+1}",
-                                                        markersize=3,
-                                                        marker=markers[ind_i],
+                                                        markersize=2,
+                                                        #marker=markers[ind_i],
                                                         linewidth=1)
                 
                 self.axs_2D[0].legend()
-                self.axs_2D[1].legend()
+                #self.axs_2D[1].legend()
                 self.axs_2D[0].grid()
                 self.axs_2D[1].grid()
                 self.canvas_2D.draw()

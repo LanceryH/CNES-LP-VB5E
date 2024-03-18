@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.optimize import leastsq
+from scipy.stats import linregress
 import matplotlib.pyplot as plt
 
 class Equations_ESA:
@@ -13,6 +14,7 @@ class Equations_ESA:
         self.tau_2 = None
         self.T_p_1 = None
         self.T_p_2 = None
+        self.Ke = None
         self.h = 0.0012  # thickness in meters
         self.l = 0.010 # Length of the material in meters
         self.n = 0.010 # Width of the material in meters
@@ -47,13 +49,16 @@ class Equations_ESA:
             sum += m_i[i]*(1-np.exp(-np.array(time)/tau_s[i]))
         return sum
 
-    def function_TML_simmu(self, *params, time, temp):
-        A_s = params[0][0]
-        E_s = params[0][1]
-        mi_s = params[0][2]
-        k_i = A_s*np.exp(-E_s/(self.R_cte*temp))
-        mu_t = mi_s*(1-np.exp(-1*time*k_i))
-        return mu_t
+    def function_TML_simmu(self, *params, time, temp, Tref):
+        sum = 0
+        tau_s = params[0][:6]
+        m_i = params[0][6:]
+        #print(m_i)
+        
+        for i in range(len(tau_s)):   
+            tau_T = tau_s[i]*np.exp(-self.Ke*(temp-Tref))         
+            sum += m_i[i]*(1-np.exp(-time/tau_T))
+        return sum
     
     def function_TML_fit(self,n=6): 
         
@@ -70,17 +75,20 @@ class Equations_ESA:
             self.result_dic["fitted data exp small"].append(exp_i) 
             self.result_dic["fitted data 5exp"].extend(exp_i+self.table_data["mu"][ind_i][0])
         #plt.figure()
+        Ki = 1
         for ind_i in range(4):
-            d_m_2 = self.result_dic["fitted data exp small"][ind_i+1][10] - self.result_dic["fitted data exp small"][ind_i+1][0]
-            d_T_2 = self.table_data["time_tot_reshaped"][ind_i+1][10] - self.table_data["time_tot_reshaped"][ind_i+1][0]
+
+            d_m_2 = self.result_dic["fitted data 5exp"][(ind_i+1)*24*60+500] - self.result_dic["fitted data 5exp"][(ind_i+1)*24*60]
+            d_T_2 = self.table_data["time_tot_tot"][(ind_i+1)*24*60+500] - self.table_data["time_tot_tot"][(ind_i+1)*24*60]
             
-            d_m_1 = self.result_dic["fitted data exp small"][ind_i][-1] - self.result_dic["fitted data exp small"][ind_i][-10]
-            d_T_1 = self.table_data["time_tot_reshaped"][ind_i][-1] - self.table_data["time_tot_reshaped"][ind_i][-10]
+            d_m_1 = self.result_dic["fitted data 5exp"][(ind_i+1)*24*60] - self.result_dic["fitted data 5exp"][(ind_i+1)*24*60-500]
+            d_T_1 = self.table_data["time_tot_tot"][(ind_i+1)*24*60] - self.table_data["time_tot_tot"][(ind_i+1)*24*60-500]
 
-            ka = (d_m_2/d_T_2)/(d_m_1/d_T_1)
-            Ea = np.log(ka)*self.R*self.table_data["time"][ind_i][2]*self.table_data["temp"][ind_i][2]/(self.table_data["temp"][ind_i+1][2]-self.table_data["temp"][ind_i][2])
-            self.result_dic["coeff_transition"].append([ka,Ea])
-
+            Ki_i1 = (d_m_2/d_T_2)/(d_m_1/d_T_1)
+            Ea = np.log(Ki_i1)*self.R*self.table_data["time"][ind_i][2]*self.table_data["temp"][ind_i+1][2]/(self.table_data["temp"][ind_i+1][2]-self.table_data["temp"][ind_i][2])
+            self.result_dic["coeff_transition"].append([Ki_i1*Ki,Ea])
+            print("Ki_i1",Ki_i1)
+            Ki=Ki_i1*Ki
 
         # Enregistrement des data
         temp = [25,50,75,100,125]
@@ -107,6 +115,15 @@ class Equations_ESA:
         xx = self.table_data["time_tot"]
         yy = np.linspace(min(temp),max(temp),precision_3D)
         self.result_dic["X_3D_smooth"], self.result_dic["Y_3D_smooth"] = np.meshgrid(xx, yy)
+
+        plt.figure()
+        list_test= []
+        for ind in range(4):
+            list_test.append(self.result_dic["coeff_transition"][ind][0])
+        self.Ke, intercept, r, p, se = linregress(temp[:-1], np.log(list_test))
+        plt.scatter(temp[:-1], np.log(list_test))
+        plt.plot(temp[:-1], intercept + self.Ke*np.array(temp[:-1]), 'r', label="fitted line")
+        #plt.show()
         return 
 
     def objective(self, x, ind_i):
