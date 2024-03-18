@@ -20,7 +20,8 @@ class Ui(QtWidgets.QMainWindow):
         #self.setFixedSize(1080,760)
         self.setWindowTitle("LP/VB5E")
         self.path = None
-        
+        self.temp_total_simu = []
+
         self.treeWidget.expandAll()
         self.treeWidget.show()
         self.treeWidget.setAlternatingRowColors(True)
@@ -32,11 +33,13 @@ class Ui(QtWidgets.QMainWindow):
         self.tabWidget.currentChanged.connect(self.tabWidget_fonction)
 
         self.figure_2D, self.axs_2D= plt.subplots(2, 1, sharex=True, gridspec_kw={"height_ratios": [2,1]})#, figsize=(10, 4))
-        self.figure_2D.tight_layout()
+        self.figure_2D.tight_layout(rect=[0.015, 0, 0.95, 1])
         self.axs_2D[0].grid()
         self.axs_2D[1].grid()
         self.axs_2D[1].set_xlabel("Temps [minutes]")
         self.axs_2D[0].set_ylabel("Perte de masse [%]")
+        self.twin_2D = self.axs_2D[0].twinx()
+        self.twin_2D.set_ylabel("Température [°C]")
         self.canvas_2D = FigureCanvas(self.figure_2D)
         self.toolbar_2D = NavigationToolbar(self.canvas_2D,self)
         self.layout_of_2D = QtWidgets.QVBoxLayout()
@@ -45,10 +48,12 @@ class Ui(QtWidgets.QMainWindow):
         self.groupBox_11.setLayout(self.layout_of_2D)
 
         self.figure_2D_sim, self.axs_2D_sim = plt.subplots(1, 1)#, figsize=(10, 4))
-        self.figure_2D_sim.tight_layout(rect=[0.015, 0, 1, 1])
+        self.figure_2D_sim.tight_layout(rect=[0.02, 0, 0.95, 1])
         self.axs_2D_sim.grid()
         self.axs_2D_sim.set_xlabel("Temps [minutes]")
         self.axs_2D_sim.set_ylabel("Perte de masse [%]")
+        self.twin_2D_sim = self.axs_2D_sim.twinx()
+        self.twin_2D_sim.set_ylabel("Température [°C]")
         self.canvas_2D_sim = FigureCanvas(self.figure_2D_sim)
         self.toolbar_2D_sim = NavigationToolbar(self.canvas_2D_sim,self)
         self.layout_of_2D_sim = QtWidgets.QVBoxLayout()
@@ -96,8 +101,10 @@ class Ui(QtWidgets.QMainWindow):
         return
 
     def pushButton_6_fonction(self):
+        self.temp_total_simu = []
         if self.comboBox_7.currentText() != "ESTEC":
             self.axs_2D_sim.cla()
+            self.twin_2D_sim.cla()
             self.axs_2D_sim.set_xlabel("Temps [minutes]")
             self.axs_2D_sim.set_ylabel("Perte de masse [%]")
             result_simu = [0]
@@ -107,22 +114,22 @@ class Ui(QtWidgets.QMainWindow):
                 time = np.linspace(0,tf,tf)
                 temp = np.linspace(int(self.tableWidget.item(ind_i,0).text()),int(self.tableWidget.item(ind_i,1).text()),tf)
                 t_tot += tf
-
+                self.temp_total_simu.extend(temp)
                 result_palier=[]
                 for ind_j in range(len(temp)):
                     result_expo=0
-                    
                     for ind_k in range(5):
                         result_expo+=self.system.function_TML_simmu(self.system.result_dic["parameter_exp"][ind_k],time=time[ind_j],temp=temp[ind_j])
-
                     if result_expo>result_simu[-1]:
                         result_palier.append(result_expo)
 
                 result_simu.extend(result_palier)
             result_simu.pop(0)
             self.axs_2D_sim.plot(np.linspace(0,t_tot,len(result_simu)),result_simu,"black", label="simu",linewidth=1)
+            self.twin_2D_sim.plot(np.linspace(0,t_tot,len(self.temp_total_simu)),self.temp_total_simu,"orange", label="Température [C°]",linewidth=1)
         else:
             self.axs_2D_sim.cla()
+            self.twin_2D_sim.cla()
             self.axs_2D_sim.set_xlabel("Temps [minutes]")
             self.axs_2D_sim.set_ylabel("Perte de masse [%]")
             result_simu = [0]
@@ -132,6 +139,7 @@ class Ui(QtWidgets.QMainWindow):
                 time = np.linspace(0,tf,tf)
                 temp = np.linspace(int(self.tableWidget.item(ind_i,0).text()),int(self.tableWidget.item(ind_i,1).text()),tf)
                 t_tot += tf
+                self.temp_total_simu.extend(temp)
 
                 result_palier=[]
                 for ind_j in range(len(temp)):                    
@@ -140,14 +148,15 @@ class Ui(QtWidgets.QMainWindow):
                 result_simu.extend(np.array(result_palier)+result_simu[-1])
             result_simu.pop(0)
             self.axs_2D_sim.plot(np.linspace(0,t_tot,len(result_simu)),result_simu,"black", label="simu",linewidth=1)
-        self.axs_2D_sim.legend()
-        #self.axs_2D_sim.plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data")
-
+            self.twin_2D_sim.plot(np.linspace(0,t_tot,len(self.temp_total_simu)),self.temp_total_simu,"orange", label="Température [C°]",linewidth=1)
+            
         self.axs_2D_sim.legend()
         self.axs_2D_sim.grid()
+        self.twin_2D_sim.set_ylim(ymin=0)
         self.canvas_2D_sim.draw()
 
     def spinBox_8_fonction(self):
+        self.temp_total_simu = []
         self.tableWidget.setRowCount(int(self.spinBox_8.value()))
         self.tableWidget.itemChanged.connect(self.tableWidget_fonction)   
         self.data = []
@@ -200,10 +209,10 @@ class Ui(QtWidgets.QMainWindow):
         return
 
     def actionAffichage_Temp_rature_fonction(self):
-        for ind_i in range(1,6):
-            self.axs_2D[0].axvline(x=24*60*ind_i,color="cyan")
-            self.axs_2D[1].axvline(x=24*60*ind_i,color="cyan")   
-            self.canvas_2D.draw()
+        self.twin_2D.plot(self.table_data["time_tot"],self.table_data["temp_tot"],"orange", label="temp", linewidth=1)
+        self.twin_2D_sim.plot(self.table_data["time_tot"],self.temp_total_simu)
+        #self.axs_2D[1].plot(self.table_data["time_tot"],self.table_data["temp_tot"],"c", label="temp", linewidth=1)
+        self.canvas_2D.draw()
 
     def actionRafraichir_fonction(self):
         self.axs_2D[0].cla()
@@ -214,6 +223,12 @@ class Ui(QtWidgets.QMainWindow):
         self.axs_2D[0].set_ylabel("Perte de masse [%]")
         self.canvas_2D.draw()
 
+        self.axs_2D_sim.cla()
+        self.axs_2D_sim.grid()
+        self.axs_2D_sim.set_xlabel("Temps [minutes]")
+        self.axs_2D_sim.set_ylabel("Perte de masse [%]")
+        self.canvas_2D_sim.draw()
+
         self.ax_3D.cla()
         self.ax_3D.view_init(elev=13, azim=-127)
         self.ax_3D.grid()
@@ -221,8 +236,7 @@ class Ui(QtWidgets.QMainWindow):
         self.ax_3D.set_ylabel("ISO [°C]")
         self.ax_3D.set_zlabel("Perte de masse [%]")
         self.canvas_3D.draw()
-        self.treeWidget_2.hide()
-        self.treeWidget.hide()
+
 
     def actionRead_me_fonction(sef):
         webbrowser.open('https://github.com/LanceryH/Cnes_LP_VB5E/blob/main/README.md')
@@ -278,7 +292,6 @@ class Ui(QtWidgets.QMainWindow):
                 #self.axs_2D[1].legend()
                 self.axs_2D[0].grid()
                 self.axs_2D[1].grid()
-                self.canvas_2D.draw()
                 self.ax_3D.cla()
                 self.ax_3D.set_xlabel("Temps [minutes]")
                 self.ax_3D.set_ylabel("ISO [°C]")
@@ -289,8 +302,7 @@ class Ui(QtWidgets.QMainWindow):
                                         color="black", 
                                         linewidth=1,
                                         antialiased=True)
-                self.canvas_3D.draw()
-                
+                                
             if self.comboBox_7.currentText() == "ESTEC":
                 self.treeWidget.hide()
                 self.tableWidget.hide()
@@ -332,7 +344,6 @@ class Ui(QtWidgets.QMainWindow):
                 #self.axs_2D[1].legend()
                 self.axs_2D[0].grid()
                 self.axs_2D[1].grid()
-                self.canvas_2D.draw()
                 self.ax_3D.cla()
                 self.ax_3D.set_xlabel("Temps [minutes]")
                 self.ax_3D.set_ylabel("ISO [°C]")
@@ -343,7 +354,6 @@ class Ui(QtWidgets.QMainWindow):
                                         color="black", 
                                         linewidth=1,
                                         antialiased=True)
-                self.canvas_3D.draw()
             
             if self.comboBox_7.currentText() == "CNES fast":
                 self.treeWidget_2.hide()
@@ -378,7 +388,6 @@ class Ui(QtWidgets.QMainWindow):
                 #self.axs_2D[1].legend()
                 self.axs_2D[0].grid()
                 self.axs_2D[1].grid()
-                self.canvas_2D.draw()
                 self.ax_3D.cla()
                 self.ax_3D.set_xlabel("Temps [minutes]")
                 self.ax_3D.set_ylabel("ISO [°C]")
@@ -389,8 +398,10 @@ class Ui(QtWidgets.QMainWindow):
                                         color="black", 
                                         linewidth=1,
                                         antialiased=True)
-                self.canvas_3D.draw()
-                
+
+            self.twin_2D.plot(self.table_data["time_tot"],self.table_data["temp_tot"],"orange", label="temp", linewidth=1)   
+            self.canvas_2D.draw() 
+            self.canvas_3D.draw()
             #table_data, data_expo = clear_data("L:\Projet_stage\LP_VB5E_3\Données\\EC9323-2.xls")
 
                       
