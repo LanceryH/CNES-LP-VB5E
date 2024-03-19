@@ -139,15 +139,11 @@ class Ui(QtWidgets.QMainWindow):
                 t_tot += tf
                 self.temp_total_simu.extend(temp)
 
-                result_palier=[0]
-                for ind_j in range(len(temp)):  
-                    expo_result=0 
-                    for ind_k in range(5):  
-                        if  temp[ind_j]>=(ind_k+1)*25:
-                            expo_result = self.system.function_TML_simmu(list(self.system.result_dic["parameter_exp"][ind_k]),time=time[ind_j],temp=temp[ind_j],Tref=temp[0])+result_simu[-1]
-                    result_palier.append(expo_result)
-                result_simu.pop(0)
-                result_simu.extend(np.array(result_palier))
+                result_palier=[]
+                for ind_j in range(len(temp)):                    
+                    result_palier.append(self.system.function_TML_simmu(list(self.system.result_dic["parameter_exp"][ind_i]),time=time[ind_j],temp=temp[ind_j],Tref=temp[0]))
+
+                result_simu.extend(np.array(result_palier)+result_simu[-1])
             result_simu.pop(0)
             a = self.axs_2D_sim.plot(np.linspace(0,t_tot,t_tot),result_simu,"black", label="simu",linewidth=1)
             b = self.twin_2D_sim.plot(np.linspace(0,t_tot,t_tot),self.temp_total_simu,"orange", label="Température",linewidth=1)
