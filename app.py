@@ -22,6 +22,9 @@ class Ui(QtWidgets.QMainWindow):
         self.path = None
         self.temp_total_simu = []
 
+        self.statusBar.showMessage("Cnes 2024")
+        self.statusBar.addPermanentWidget(QLabel(str(date.today())))
+
         self.treeWidget.expandAll()
         self.treeWidget.show()
         self.treeWidget.setAlternatingRowColors(True)
@@ -40,6 +43,7 @@ class Ui(QtWidgets.QMainWindow):
         self.axs_2D[0].set_ylabel("Perte de masse [%]")
         self.twin_2D = self.axs_2D[0].twinx()
         self.twin_2D.set_ylabel("Température [°C]")
+        self.twin_2D.set_ylim((0,140))
         self.canvas_2D = FigureCanvas(self.figure_2D)
         self.toolbar_2D = NavigationToolbar(self.canvas_2D,self)
         self.layout_of_2D = QtWidgets.QVBoxLayout()
@@ -54,6 +58,7 @@ class Ui(QtWidgets.QMainWindow):
         self.axs_2D_sim.set_ylabel("Perte de masse [%]")
         self.twin_2D_sim = self.axs_2D_sim.twinx()
         self.twin_2D_sim.set_ylabel("Température [°C]")
+        self.twin_2D_sim.set_ylim((0,140))
         self.canvas_2D_sim = FigureCanvas(self.figure_2D_sim)
         self.toolbar_2D_sim = NavigationToolbar(self.canvas_2D_sim,self)
         self.layout_of_2D_sim = QtWidgets.QVBoxLayout()
@@ -76,8 +81,6 @@ class Ui(QtWidgets.QMainWindow):
         self.layout_of_3D.addWidget(self.canvas_3D)
         self.groupBox_13.setLayout(self.layout_of_3D)
 
-        self.label_10.setText(str(date.today()))
-
         self.actionNew.triggered.connect(self.menuNew_fonction)
         self.actionOpen.triggered.connect(self.actionOpen_fonction)
         self.actionRecent.triggered.connect(self.actionRecent_fonction)
@@ -85,7 +88,6 @@ class Ui(QtWidgets.QMainWindow):
         self.actionRafraichir.triggered.connect(self.actionRafraichir_fonction)
         self.actionRead_me.triggered.connect(self.actionRead_me_fonction)
         self.pushButton_5.clicked.connect(self.pushButton_5_fonction)
-        self.pushButton_2.clicked.connect(self.pushButton_2_fonction)
         self.pushButton_6.clicked.connect(self.pushButton_6_fonction)
 
         self.comboBox_7.addItems(["CNES fast", "ESTEC", "CNES"])
@@ -102,11 +104,10 @@ class Ui(QtWidgets.QMainWindow):
 
     def pushButton_6_fonction(self):
         self.temp_total_simu = []
+        self.axs_2D_sim.cla()
+        self.twin_2D_sim.remove()
+        self.twin_2D_sim = self.axs_2D_sim.twinx()
         if self.comboBox_7.currentText() != "ESTEC":
-            self.axs_2D_sim.cla()
-            self.twin_2D_sim.cla()
-            self.axs_2D_sim.set_xlabel("Temps [minutes]")
-            self.axs_2D_sim.set_ylabel("Perte de masse [%]")
             result_simu = [0]
             t_tot = 0
             for ind_i in range(len(self.data)):
@@ -122,16 +123,13 @@ class Ui(QtWidgets.QMainWindow):
                         result_expo+=self.system.function_TML_simmu(self.system.result_dic["parameter_exp"][ind_k],time=time[ind_j],temp=temp[ind_j])
                     if result_expo>result_simu[-1]:
                         result_palier.append(result_expo)
-
+                    else:
+                        result_palier.append(result_simu[-1])
                 result_simu.extend(result_palier)
             result_simu.pop(0)
-            self.axs_2D_sim.plot(np.linspace(0,t_tot,len(result_simu)),result_simu,"black", label="simu",linewidth=1)
-            self.twin_2D_sim.plot(np.linspace(0,t_tot,len(self.temp_total_simu)),self.temp_total_simu,"orange", label="Température [C°]",linewidth=1)
+            a = self.axs_2D_sim.plot(np.linspace(0,t_tot,len(result_simu)),result_simu,"black", label="simu",linewidth=1)
+            b = self.twin_2D_sim.plot(np.linspace(0,t_tot,len(self.temp_total_simu)),self.temp_total_simu,"orange", label="Température",linewidth=1)
         else:
-            self.axs_2D_sim.cla()
-            self.twin_2D_sim.cla()
-            self.axs_2D_sim.set_xlabel("Temps [minutes]")
-            self.axs_2D_sim.set_ylabel("Perte de masse [%]")
             result_simu = [0]
             t_tot = 0
             for ind_i in range(len(self.data)):
@@ -141,18 +139,27 @@ class Ui(QtWidgets.QMainWindow):
                 t_tot += tf
                 self.temp_total_simu.extend(temp)
 
-                result_palier=[]
-                for ind_j in range(len(temp)):                    
-                    result_palier.append(self.system.function_TML_simmu(list(self.system.result_dic["parameter_exp"][ind_i]),time=time[ind_j],temp=temp[ind_j],Tref=temp[0]))
-
-                result_simu.extend(np.array(result_palier)+result_simu[-1])
+                result_palier=[0]
+                for ind_j in range(len(temp)):  
+                    expo_result=0 
+                    for ind_k in range(5):  
+                        if  temp[ind_j]>=(ind_k+1)*25:
+                            expo_result = self.system.function_TML_simmu(list(self.system.result_dic["parameter_exp"][ind_k]),time=time[ind_j],temp=temp[ind_j],Tref=temp[0])+result_simu[-1]
+                    result_palier.append(expo_result)
+                result_simu.pop(0)
+                result_simu.extend(np.array(result_palier))
             result_simu.pop(0)
-            self.axs_2D_sim.plot(np.linspace(0,t_tot,len(result_simu)),result_simu,"black", label="simu",linewidth=1)
-            self.twin_2D_sim.plot(np.linspace(0,t_tot,len(self.temp_total_simu)),self.temp_total_simu,"orange", label="Température [C°]",linewidth=1)
-            
-        self.axs_2D_sim.legend()
+            a = self.axs_2D_sim.plot(np.linspace(0,t_tot,t_tot),result_simu,"black", label="simu",linewidth=1)
+            b = self.twin_2D_sim.plot(np.linspace(0,t_tot,t_tot),self.temp_total_simu,"orange", label="Température",linewidth=1)
+
+        lns = a + b
+        labs = [l.get_label() for l in lns]
+        self.twin_2D_sim.set_ylabel("Température [°C]")
+        self.axs_2D_sim.set_xlabel("Temps [minutes]")
+        self.axs_2D_sim.set_ylabel("Perte de masse [%]")    
+        self.axs_2D_sim.legend(lns, labs)
         self.axs_2D_sim.grid()
-        self.twin_2D_sim.set_ylim(ymin=0)
+        self.twin_2D_sim.set_ylim((0,140))
         self.canvas_2D_sim.draw()
 
     def spinBox_8_fonction(self):
@@ -211,7 +218,6 @@ class Ui(QtWidgets.QMainWindow):
     def actionAffichage_Temp_rature_fonction(self):
         self.twin_2D.plot(self.table_data["time_tot"],self.table_data["temp_tot"],"orange", label="temp", linewidth=1)
         self.twin_2D_sim.plot(self.table_data["time_tot"],self.temp_total_simu)
-        #self.axs_2D[1].plot(self.table_data["time_tot"],self.table_data["temp_tot"],"c", label="temp", linewidth=1)
         self.canvas_2D.draw()
 
     def actionRafraichir_fonction(self):
@@ -275,10 +281,8 @@ class Ui(QtWidgets.QMainWindow):
 
                 self.axs_2D[0].cla()
                 self.axs_2D[1].cla()
-                self.axs_2D[1].set_xlabel("Temps [minutes]")
-                self.axs_2D[0].set_ylabel("Perte de masse [%]")
-                self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data", linewidth=1)
-                self.axs_2D[0].plot(self.table_data["time_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction CNES", linewidth=1)
+                a = self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data", linewidth=1)
+                b = self.axs_2D[0].plot(self.table_data["time_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction CNES", linewidth=1)
                 markers = ["s","D","o","x","v"]
                 for ind_i in range(len(self.system.result_dic["fitted data exp"])):
                     self.axs_2D[1].plot(self.table_data["time_tot"][::2],
@@ -288,14 +292,7 @@ class Ui(QtWidgets.QMainWindow):
                                     #marker=markers[ind_i],
                                     markersize=2,
                                     linewidth=1)
-                self.axs_2D[0].legend()
-                #self.axs_2D[1].legend()
-                self.axs_2D[0].grid()
-                self.axs_2D[1].grid()
                 self.ax_3D.cla()
-                self.ax_3D.set_xlabel("Temps [minutes]")
-                self.ax_3D.set_ylabel("ISO [°C]")
-                self.ax_3D.set_zlabel("Perte de masse [%]")
                 self.ax_3D.plot_wireframe(self.system.result_dic["X_3D_smooth"], 
                                         self.system.result_dic["Y_3D_smooth"], 
                                         self.system.result_dic["Z_3D_smooth"], 
@@ -326,10 +323,8 @@ class Ui(QtWidgets.QMainWindow):
 
                 self.axs_2D[0].cla()
                 self.axs_2D[1].cla()
-                self.axs_2D[1].set_xlabel("Temps [minutes]")
-                self.axs_2D[0].set_ylabel("Perte de masse [%]")
-                self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data", linewidth=1)
-                self.axs_2D[0].plot(self.table_data["time_tot_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction ESA", linewidth=1)
+                a = self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data", linewidth=1)
+                b = self.axs_2D[0].plot(self.table_data["time_tot_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction ESA", linewidth=1)
                 markers = ["s","D","o","x","v"]
                 for ind_i in range(len(self.system.result_dic["fitted data exp"])):
                     self.axs_2D[1].plot((np.array(self.table_data["time_tot_tot"])+(24*60*ind_i))[:24*60*(5-ind_i)][::100],
@@ -339,15 +334,8 @@ class Ui(QtWidgets.QMainWindow):
                                                         markersize=2,
                                                         #marker=markers[ind_i],
                                                         linewidth=1)
-                
-                self.axs_2D[0].legend()
-                #self.axs_2D[1].legend()
-                self.axs_2D[0].grid()
-                self.axs_2D[1].grid()
+                    
                 self.ax_3D.cla()
-                self.ax_3D.set_xlabel("Temps [minutes]")
-                self.ax_3D.set_ylabel("ISO [°C]")
-                self.ax_3D.set_zlabel("Perte de masse [%]")
                 self.ax_3D.plot_wireframe(self.system.result_dic["X_3D_smooth"], 
                                         self.system.result_dic["Y_3D_smooth"], 
                                         self.system.result_dic["Z_3D_smooth"], 
@@ -370,10 +358,8 @@ class Ui(QtWidgets.QMainWindow):
 
                 self.axs_2D[0].cla()
                 self.axs_2D[1].cla()
-                self.axs_2D[1].set_xlabel("Temps [minutes]")
-                self.axs_2D[0].set_ylabel("Perte de masse [%]")
-                self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data", linewidth=1)
-                self.axs_2D[0].plot(self.table_data["time_tot_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction CNES", linewidth=1)
+                a = self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data", linewidth=1)
+                b = self.axs_2D[0].plot(self.table_data["time_tot_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction CNES", linewidth=1)
                 markers = ["s","D","o","x","v"]
                 for ind_i in range(len(self.system.result_dic["fitted data exp"])):
                     self.axs_2D[1].plot((np.array(self.table_data["time_tot_tot"])+(24*60*ind_i))[:24*60*(5-ind_i)][::100],
@@ -384,14 +370,7 @@ class Ui(QtWidgets.QMainWindow):
                                                         #marker=markers[ind_i],
                                                         linewidth=1)
                 
-                self.axs_2D[0].legend()
-                #self.axs_2D[1].legend()
-                self.axs_2D[0].grid()
-                self.axs_2D[1].grid()
                 self.ax_3D.cla()
-                self.ax_3D.set_xlabel("Temps [minutes]")
-                self.ax_3D.set_ylabel("ISO [°C]")
-                self.ax_3D.set_zlabel("Perte de masse [%]")
                 self.ax_3D.plot_wireframe(self.system.result_dic["X_3D_smooth"], 
                                         self.system.result_dic["Y_3D_smooth"], 
                                         self.system.result_dic["Z_3D_smooth"], 
@@ -399,29 +378,21 @@ class Ui(QtWidgets.QMainWindow):
                                         linewidth=1,
                                         antialiased=True)
 
-            self.twin_2D.plot(self.table_data["time_tot"],self.table_data["temp_tot"],"orange", label="temp", linewidth=1)   
+            self.ax_3D.set_xlabel("Temps [minutes]")
+            self.ax_3D.set_ylabel("ISO [°C]")
+            self.ax_3D.set_zlabel("Perte de masse [%]")
+
+            self.axs_2D[1].set_xlabel("Temps [minutes]")
+            self.axs_2D[0].set_ylabel("Perte de masse [%]")
+            
+            self.axs_2D[0].grid()
+            self.axs_2D[1].grid()
+            c = self.twin_2D.plot(self.table_data["time_tot"],self.table_data["temp_tot"],"orange", label="Température", linewidth=1)  
+            lns = a + b + c
+            labs = [l.get_label() for l in lns] 
+            self.axs_2D[0].legend(lns, labs)
             self.canvas_2D.draw() 
             self.canvas_3D.draw()
-            #table_data, data_expo = clear_data("L:\Projet_stage\LP_VB5E_3\Données\\EC9323-2.xls")
-
-                      
-            
-            #system_ONERA = Equations_ONERA(table_data, data_expo)
-            #system_ONERA.Initialisation()
-            
-            #ESA method
-            #mu_t_ESA = system_ESA.function_TML_fit(n=6)
-            
-            #CNES method
-            #mu_t_CNES, params = system_CNES.function_TML_fit()
-            
-            #ONERA method
-            #mu_t_ONERA = system_ONERA.function_TML_fit()
-            #tau = int(system_ONERA.tau)
-                
-
-
-        
 
         else:
             print("pls select a file first")
@@ -430,10 +401,6 @@ class Ui(QtWidgets.QMainWindow):
         for column in range(len(array)):
             self.tableWidget.setItem(0,column,QTableWidgetItem(str(array[column])))
                     
-    def pushButton_2_fonction(self):
-        print("Refresh")
-
-    
 
         
         

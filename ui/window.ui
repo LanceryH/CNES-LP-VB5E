@@ -253,45 +253,48 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>680</y>
+      <y>630</y>
       <width>351</width>
-      <height>31</height>
+      <height>81</height>
      </rect>
     </property>
     <property name="title">
      <string/>
     </property>
-    <widget class="QLabel" name="label_9">
+    <widget class="QScrollArea" name="scrollArea">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>6</y>
-       <width>71</width>
-       <height>20</height>
+       <y>10</y>
+       <width>331</width>
+       <height>61</height>
       </rect>
      </property>
-     <property name="text">
-      <string>CNES 2024</string>
+     <property name="widgetResizable">
+      <bool>true</bool>
      </property>
-    </widget>
-    <widget class="QLabel" name="label_10">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>6</y>
-       <width>91</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
-     <property name="text">
-      <string>26/02</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>329</width>
+        <height>59</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>Console</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
@@ -300,7 +303,7 @@
       <x>10</x>
       <y>140</y>
       <width>351</width>
-      <height>531</height>
+      <height>481</height>
      </rect>
     </property>
     <property name="title">
@@ -312,7 +315,7 @@
        <x>10</x>
        <y>10</y>
        <width>331</width>
-       <height>511</height>
+       <height>461</height>
       </rect>
      </property>
      <property name="maximumSize">
@@ -575,7 +578,7 @@
        <x>10</x>
        <y>10</y>
        <width>331</width>
-       <height>511</height>
+       <height>461</height>
       </rect>
      </property>
      <property name="sizePolicy">
@@ -1528,7 +1531,7 @@
        <x>10</x>
        <y>10</y>
        <width>331</width>
-       <height>511</height>
+       <height>461</height>
       </rect>
      </property>
      <column>
@@ -1622,7 +1625,7 @@
      <x>0</x>
      <y>0</y>
      <width>1118</width>
-     <height>29</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -1644,7 +1647,6 @@
     <property name="title">
      <string>Graphe</string>
     </property>
-    <addaction name="actionAffichage_Temp_rature"/>
     <addaction name="actionRafraichir"/>
     <addaction name="separator"/>
     <addaction name="actionImprimer"/>
@@ -1666,7 +1668,11 @@
    <addaction name="menuOption"/>
    <addaction name="menuHelp"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+  </widget>
   <action name="actionAffichage_Temp_rature">
    <property name="text">
     <string>Affichage Température</string>
@@ -1709,7 +1715,7 @@
   </action>
   <action name="actionNew">
    <property name="text">
-    <string>Save</string>
+    <string>Enregistrer</string>
    </property>
    <property name="font">
     <font>
@@ -1745,7 +1751,12 @@
   </action>
   <action name="actionRead_me">
    <property name="text">
-    <string>Read.me</string>
+    <string>Lien</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
   </action>
  </widget>
