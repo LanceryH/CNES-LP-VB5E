@@ -81,6 +81,21 @@ class Ui(QtWidgets.QMainWindow):
         self.layout_of_3D.addWidget(self.canvas_3D)
         self.groupBox_13.setLayout(self.layout_of_3D)
 
+        self.figure_3D_sim = plt.figure(4)
+        self.ax_3D_sim = self.figure_3D_sim.add_subplot(projection='3d')
+        self.figure_3D_sim.tight_layout()
+        self.ax_3D_sim.view_init(elev=13, azim=-127)
+        self.ax_3D_sim.grid()
+        self.ax_3D_sim.set_xlabel("Temps [minutes]")
+        self.ax_3D_sim.set_ylabel("ISO [°C]")
+        self.ax_3D_sim.set_zlabel("Perte de masse [%]")
+        self.canvas_3D_sim = FigureCanvas(self.figure_3D_sim)
+        self.toolbar_3D_sim = NavigationToolbar(self.canvas_3D_sim,self)
+        self.layout_of_3D_sim = QtWidgets.QVBoxLayout()
+        self.layout_of_3D_sim.addWidget(self.toolbar_3D_sim)
+        self.layout_of_3D_sim.addWidget(self.canvas_3D_sim)
+        self.groupBox_15.setLayout(self.layout_of_3D_sim)
+
         self.actionNew.triggered.connect(self.menuNew_fonction)
         self.actionOpen.triggered.connect(self.actionOpen_fonction)
         self.actionRecent.triggered.connect(self.actionRecent_fonction)
@@ -105,6 +120,7 @@ class Ui(QtWidgets.QMainWindow):
     def pushButton_6_fonction(self):
         self.temp_total_simu = []
         self.axs_2D_sim.cla()
+        self.ax_3D_sim.cla()
         self.twin_2D_sim.remove()
         self.twin_2D_sim = self.axs_2D_sim.twinx()
         if self.comboBox_7.currentText() != "ESTEC":
@@ -129,24 +145,81 @@ class Ui(QtWidgets.QMainWindow):
             result_simu.pop(0)
             a = self.axs_2D_sim.plot(np.linspace(0,t_tot,len(result_simu)),result_simu,"black", label="simu",linewidth=1)
             b = self.twin_2D_sim.plot(np.linspace(0,t_tot,len(self.temp_total_simu)),self.temp_total_simu,"orange", label="Température",linewidth=1)
+
+            self.ax_3D_sim.plot_wireframe(self.system.result_dic["X_3D_smooth"], 
+                                    self.system.result_dic["Y_3D_smooth"], 
+                                    self.system.result_dic["Z_3D_smooth"], 
+                                    color="black", 
+                                    linewidth=1,
+                                    antialiased=True)
+            
         else:
-            result_simu = [0]
+            
+            n_seg = len(self.data)
             t_tot = 0
-            for ind_i in range(len(self.data)):
-                tf = int(self.tableWidget.item(ind_i,2).text())
-                time = np.linspace(0,tf,tf)
-                temp = np.linspace(int(self.tableWidget.item(ind_i,0).text()),int(self.tableWidget.item(ind_i,1).text()),tf)
+
+            # Boucle par segment de l'User
+            result_simu = [0]
+            for ind_k in range(n_seg):
+                tf = int(self.tableWidget.item(ind_k,2).text())
+                time_seg = np.linspace(0,tf,tf)
+                temp_seg = np.linspace(int(self.tableWidget.item(ind_k,0).text()),int(self.tableWidget.item(ind_k,1).text()),tf)
+                temp_pal = []
+                time_pal = []
+                list_pal = []
                 t_tot += tf
-                self.temp_total_simu.extend(temp)
+                self.temp_total_simu.extend(temp_seg)
 
-                result_palier=[]
-                for ind_j in range(len(temp)):                    
-                    result_palier.append(self.system.function_TML_simmu(list(self.system.result_dic["parameter_exp"][ind_i]),time=time[ind_j],temp=temp[ind_j],Tref=temp[0]))
+                for ind_l in range(1,6):
+                    pal_i_temp=[]
+                    pal_i_time=[]
+                    for ind_i, temp in enumerate(temp_seg):
+                        if temp>=ind_l*25 and temp<(ind_l+1)*25: 
+                            list_pal.append(ind_l)
+                            pal_i_temp.append(temp)
+                            pal_i_time.append(time_seg[ind_i])
+                    if len(pal_i_temp)!=0:
+                        time_pal.append(np.array(pal_i_time)-pal_i_time[0])
+                        temp_pal.append(pal_i_temp)
+                
+                list_pal = np.unique(list_pal)
 
-                result_simu.extend(np.array(result_palier)+result_simu[-1])
+                
+                #print(f"Segment n°{ind_k}:",list_pal)
+
+                # Boucle par parlier atteint
+                result_seg = [0]
+                for ind_i in range(len(list_pal)):
+
+                    # Boucle parcourant tout les 't' du palier
+                    result_pal = [0]
+                    expo = 0
+                    for ind_j in range(len(time_pal[ind_i])):
+                        
+                        # Boucle des paramètres fittés
+                        expo = self.system.function_TML_simmu(self.system.result_dic["parameter_exp"][list_pal[ind_i]-1],time=time_pal[ind_i][ind_j],temp=temp_pal[ind_i][ind_j], Tref=temp_pal[ind_i][0])
+                        
+                        result_pal.append(expo)
+                    
+                    result_pal.pop(0)
+                    add_me = np.max(result_seg)
+                    result_seg.extend(np.array(result_pal)+add_me)
+                result_seg.pop(0)
+                add_me = np.max(result_simu)
+                result_simu.extend(np.array(result_seg)+add_me)   
+                self.ax_3D_sim.scatter(time_seg,temp_seg,result_seg)        
             result_simu.pop(0)
-            a = self.axs_2D_sim.plot(np.linspace(0,t_tot,t_tot),result_simu,"black", label="simu",linewidth=1)
+
+            a = self.axs_2D_sim.plot(np.linspace(0,t_tot,t_tot),result_simu[:t_tot],"black", label="simu",linewidth=1)
             b = self.twin_2D_sim.plot(np.linspace(0,t_tot,t_tot),self.temp_total_simu,"orange", label="Température",linewidth=1)
+
+            self.ax_3D_sim.plot_wireframe(self.system.result_dic["X_3D_smooth"], 
+                                    self.system.result_dic["Y_3D_smooth"], 
+                                    self.system.result_dic["Z_3D_smooth"], 
+                                    color="black", 
+                                    linewidth=1,
+                                    antialiased=True)
+            
 
         lns = a + b
         labs = [l.get_label() for l in lns]
@@ -156,6 +229,11 @@ class Ui(QtWidgets.QMainWindow):
         self.axs_2D_sim.legend(lns, labs)
         self.axs_2D_sim.grid()
         self.twin_2D_sim.set_ylim((0,140))
+        self.ax_3D_sim.grid()
+        self.ax_3D_sim.set_xlabel("Temps [minutes]")
+        self.ax_3D_sim.set_ylabel("ISO [°C]")
+        self.ax_3D_sim.set_zlabel("Perte de masse [%]")
+        self.canvas_3D_sim.draw()
         self.canvas_2D_sim.draw()
 
     def spinBox_8_fonction(self):

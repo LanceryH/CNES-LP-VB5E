@@ -194,7 +194,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>Lissage 3D</string>
+        <string>Méthodes</string>
        </property>
       </widget>
       <widget class="QComboBox" name="comboBox_9">
@@ -1561,7 +1561,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="tab_3">
      <attribute name="title">
@@ -1617,6 +1617,24 @@
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="tab_6">
+     <attribute name="title">
+      <string>Simulation 3D</string>
+     </attribute>
+     <widget class="QGroupBox" name="groupBox_15">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>711</width>
+        <height>651</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -1625,7 +1643,7 @@
      <x>0</x>
      <y>0</y>
      <width>1118</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -1659,7 +1677,7 @@
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
-     <string>Help</string>
+     <string>Aide</string>
     </property>
     <addaction name="actionRead_me"/>
    </widget>
