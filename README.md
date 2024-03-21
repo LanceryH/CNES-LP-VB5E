@@ -1,18 +1,66 @@
------
-## Prédiction du dégazage méthode MC CNES
-----
-### Définition du sujet
 
-nombre d'exponentielles $n=5$
+# Prédiction et modélisation du dégazage LPVB5E
+
+### Méthode CNES
+
+Considération de 5 espèces chimique dégazées avec une volatilité décroissante
+
+### $$\forall i \in ⟦ 1,n ⟧, \quad E_i>E_{i-1}$$
+### $$k^{(t)}_i = A_i e^{\frac{E_i}{RT^{(t)}}}$$
+### $$n = 5$$
+### $$\mu^{(t)}=\sum_{i=1}^{n} \int_{t_0}^{t}(\mu_i-\mu^{(t)}_i) (1-e^{-dt. k^{(t)}_i})$$
+
+### Méthode ESA
+
+Considération de 6 espèces chimique dégazées par pallier
 
 ### $$k^{(t)}_i = A_i e^{\frac{E_i}{RT^{(t)}}}$$
-### $$\mu^{(t)}=\sum_{i=1}^{n} \int_{t_0}^{t}\mu_i (1-e^{-dt. k^{(t)}_i})$$
+### $$\tau_i = \frac{1}{k^{(t)}_i}$$
+### $$j \in ⟦ 1,5 ⟧$$
+### $$n \in  ⟦ 4,9 ⟧$$
+### $$\mu_j=\sum_{i=1}^{n}\mu_i (1-e^{-\frac{dt}{\tau_i}})$$
 
-L'algorithme consiste à minimiser l'erreur de la fonction (moindre carré) en ajustant les paramètres 
+### Fonctionnement du fitting
 
-suivant l'approximation jacobienne de la fonction objectif hessienne des moindres carrés
+L'algorithme consiste à minimiser l'erreur (moindre carré) de la fonction exponentielle en ajustant les paramètres suivant l'approximation jacobienne de la fonction "objectif" hessienne.
 
-Chaque palier de température de la cinétique se voit attribué une espèce chimique approximé par une exponentielle
+Chaque palier de température de la cinétique se voit attribué un certain nombre d'espèces chimiques approximé par une exponentielle
+
+### Paramètres d'initialisation
+
+L'algorithme est trés sensible aux paramètres initiaux (gradient qui ne converge pas)
+
+| Paramètres initiaux CNES | $i \in ⟦ 1,n ⟧$|
+| :---: | :---: |
+| $E_i$ | $1500i + 500$  |
+| $A_i$ | $i10^i + 0.001$  |
+| $\mu_i$ | $0.8$  |
+
+| Paramètres initiaux ESA | $i \in ⟦ 1,5 ⟧,\quad j \in ⟦ 1,n ⟧ $|
+| :---: | :---: |
+| $\tau_i$ | $[0.5,...,0.5,0.5]$ |
+| $\mu_i$ | $[0.002,...,0.002,0.002]$  |
+
+Initialisation des paramètres [code Ref.](https://github.com/LanceryH/Cnes_LP_VB5E/blob/cab1dc12d166c8ba1ab3f4c076725c6f098306b8/resolution_CNES_M.py#L32C5-L36C44), [code Ref.](https://github.com/LanceryH/Cnes_LP_VB5E/blob/f3e286e73476426176acfa4ac20660d5a93cb20b/resolution_ESA.py#L39C1-L42C46)
+
+### Paramètres de sortie
+
+L'algorithme est trés sensible aux paramètres initiaux (gradient qui ne converge pas)
+
+| Paramètres finaux CNES |
+| :---: |
+| $E_i$ |
+| $A_i$ |
+| $\mu_i$ |
+
+| Paramètres finaux ESA |
+| :---: |
+| $\tau^j_i$ |
+| $\mu^j_i$ |
+| $E_{i\rightarrow i+1}$ |
+| $Ke_{i\rightarrow i+1}$* |
+
+*Ke est le coéfficient directeur du facteur d'accélération vs $\Delta$Température
 
 ----
 ### Application python
@@ -30,7 +78,7 @@ def function_TML(self, *params, time=0, temp=25):
       sum += (mi_s[0])*(1-np.exp(-np.array(time)*k_i_t))
       return sum
 ```
-Fonction applicant les moindres carrées sur l'équation 
+Fonction de fitting avec les moindres carrées
 [code Ref.2](https://github.com/LanceryH/Cnes_LP_VB5E/blob/cab1dc12d166c8ba1ab3f4c076725c6f098306b8/resolution_CNES_M.py#L51C1-L63C102)
 
 ```python
