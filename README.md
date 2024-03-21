@@ -123,3 +123,7 @@ La simulation d'un scénario se base sur les paramètres finaux calculé au pré
 $f(t,T)$ la fonction du segment parcouru par l'algorithme
 
 ### $$f_{a}^{b}(t,T)=\sum_{k=1}^{a} (\sum_{j=1}^{t^k_{max}} (\sum_{i=1}^{n_{esp}} (\mu_i (1-e^{(-\frac{t_j}{\tau_i.e^{(-K_e(T_j-T_{Ref}))}})}))))+f_{a}^{b-1}(t_{max}^{k-1},T_{max}^{k-1})+f_{a}^{b-1}(t,T)$$
+
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/2015c8ba-332e-43cc-8661-9621cda7de3b" alt="drawing" width="45%" height="45%"/>
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/02fc81d4-582e-4aa6-bfb6-0cbe51ea6e3e" alt="drawing" width="45%" height="45%"/>
+
