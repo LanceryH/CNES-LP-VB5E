@@ -57,8 +57,8 @@ L'algorithme est trés sensible aux paramètres initiaux (gradient qui ne conver
 | :---: |
 | $\tau^j_i$ |
 | $\mu^j_i$ |
-| $E_{i\rightarrow i+1}$ |
-| $Ke_{i\rightarrow i+1}$* |
+| $E^{i\rightarrow i+1}$ |
+| $K^{i\rightarrow i+1}_e$* |
 
 *Ke est le coéfficient directeur du facteur d'accélération vs $\Delta$Température
 
@@ -107,9 +107,19 @@ def objective(self, x, ind):
       return init_0_mu - mu_calc
 ```
 -----
-### Résultats comparaison EC2216
+### Résultats comparaison EC9323-2
 
 <img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/c809cb9b-ffea-4719-90ca-2823a25a7d4f" alt="drawing" width="45%" height="45%"/>
 <img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/22659e6b-770d-4d23-ae27-855e5e59ab9d" alt="drawing" width="45%" height="45%"/>
-<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/f837df3a-7439-4373-a00c-1876256ed137" alt="drawing" width="70%" height="70%"/>
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/f837df3a-7439-4373-a00c-1876256ed137" alt="drawing" width="45%" height="45%"/>
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/ef534afa-e6d7-4db0-9614-0320905f9fe0" alt="drawing" width="45%" height="45%"/>
 
+
+----
+### Simulation
+
+La simulation d'un scénario se base sur les paramètres finaux calculé au préalable pour un matériaux donnée et en déduit son aspect.
+
+$f(t,T)$ la fonction du segment parcouru par l'algorithme
+
+### $$f_{a}^{b}(t,T)=\sum_{k=1}^{a} (\sum_{j=1}^{t^k_{max}} (\sum_{i=1}^{n_{esp}} (\mu_i (1-e^{(-\frac{t_j}{\tau_i.e^{(-K_e(T_j-T_{Ref}))}})}))))+f_{a}^{b-1}(t_{max}^{k-1},T_{max}^{k-1})+f_{a}^{b-1}(t,T)$$
