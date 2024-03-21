@@ -107,40 +107,9 @@ def objective(self, x, ind):
       return init_0_mu - mu_calc
 ```
 -----
-### Initialisation de chaque exponentielle
+### Résultats comparaison EC2216
 
-L'algorithme est trés sensible aux paramètres initiaux (gradient qui ne converge pas)
-
-| Input parameters  | Value / $i \in (1,2,3,4,5)$|
-| :---: | :---: |
-| $E_i$ | $1500i + 500$  |
-| $A_i$ | $i10^i + 0.001$  |
-| $\mu_i$ | 0.8  |
-
-Initialisation des paramètres [code Ref.4](https://github.com/LanceryH/Cnes_LP_VB5E/blob/cab1dc12d166c8ba1ab3f4c076725c6f098306b8/resolution_CNES_M.py#L32C5-L36C44)
-
------
-<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/c809cb9b-ffea-4719-90ca-2823a25a7d4f" alt="drawing" width="70%" height="70%"/>
-
------
-## Prédiction du dégazage méthode MC ESA 
-----
-### Définition du sujet
-
-Il s'agit de la même méthode mais pour chaque palier/exponentielle, 6 espèces chimiques sont considérées
-
-### $$k^{(t)}_i = A_i e^{\frac{E_i}{RT^{(t)}}}$$
-### $$j \in (1,2,3,4,5)$$
-### $$n \in  ⟦ 4,9 ⟧$$
-### $$\mu_j=\sum_{i=1}^{n}\mu_i (1-e^{-\frac{dt}{\tau_i}})$$
-
-L'algorithme conciste à miniser l'erreur de la fonction (moindres carrées) en ajustant les paramètres suivant la méthode des gradients
-
-Chaque palier de température de la cinétique se voit attribué une espèce chimique approximé par une exponentielle
-
-----
-<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/22659e6b-770d-4d23-ae27-855e5e59ab9d" alt="drawing" width="70%" height="70%"/>
-
-## Régression polynomiale du maillage
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/c809cb9b-ffea-4719-90ca-2823a25a7d4f" alt="drawing" width="45%" height="45%"/>
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/22659e6b-770d-4d23-ae27-855e5e59ab9d" alt="drawing" width="45%" height="45%"/>
 <img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/f837df3a-7439-4373-a00c-1876256ed137" alt="drawing" width="70%" height="70%"/>
 
