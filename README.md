@@ -18,7 +18,7 @@ Considération de 6 espèces chimique dégazées par pallier
 ### $$\tau_i = \frac{1}{k^{(t)}_i}$$
 ### $$j \in ⟦ 1,5 ⟧$$
 ### $$n \in  ⟦ 4,9 ⟧$$
-### $$\mu_j=\sum_{i=1}^{n}\mu_i (1-e^{-\frac{dt}{\tau_i}})$$
+### $$\mu_j=\sum_{i=1}^{n}\mu_i (1-e^{-\frac{t}{\tau_i}})$$
 
 ### Fonctionnement du fitting
 
