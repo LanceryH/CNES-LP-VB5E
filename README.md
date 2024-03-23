@@ -125,3 +125,14 @@ $f(t,T)$ la fonction du segment parcourue par l'algorithme.
 <img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/2015c8ba-332e-43cc-8661-9621cda7de3b" alt="drawing" width="45%" height="45%"/>
 <img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/02fc81d4-582e-4aa6-bfb6-0cbe51ea6e3e" alt="drawing" width="45%" height="45%"/>
 
+----
+### Requirements
+
+```
+pip install xlrd
+pip install pandas
+pip install numpy
+pip install scipy
+pip install PyQt5
+pip install matplotlib
+```
