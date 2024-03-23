@@ -126,7 +126,7 @@ $f(t,T)$ la fonction du segment parcourue par l'algorithme.
 <img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/02fc81d4-582e-4aa6-bfb6-0cbe51ea6e3e" alt="drawing" width="45%" height="45%"/>
 
 ----
-### Requirements
+### Prérequis
 
 ```
 pip install xlrd
