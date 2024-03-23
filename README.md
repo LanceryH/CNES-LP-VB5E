@@ -38,8 +38,8 @@ L'algorithme est très sensible aux paramètres initiaux (gradient qui ne conver
 
 | Paramètres initiaux ESA | $i \in ⟦ 1,5 ⟧,\quad j \in ⟦ 1,n ⟧ $|
 | :---: | :---: |
-| $\tau_i$ | $[0.5,...,0.5,0.5]$ |
-| $\mu_i$ | $[0.002,...,0.002,0.002]$  |
+| $\tau^j_i$ | $[0.5,...,0.5,0.5]$ |
+| $\mu^j_i$ | $[0.002,...,0.002,0.002]$  |
 
 Initialisation des paramètres [code Ref.](https://github.com/LanceryH/Cnes_LP_VB5E/blob/cab1dc12d166c8ba1ab3f4c076725c6f098306b8/resolution_CNES_M.py#L32C5-L36C44), [code Ref.](https://github.com/LanceryH/Cnes_LP_VB5E/blob/f3e286e73476426176acfa4ac20660d5a93cb20b/resolution_ESA.py#L39C1-L42C46)
 
