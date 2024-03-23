@@ -1,18 +1,64 @@
------
-## Prédiction du dégazage méthode MC CNES
-----
-### Définition du sujet
 
-nombre d'exponentielles $n=5$
+# Prédiction et modélisation du dégazage LPVB5E
+
+### Méthode CNES
+
+Considération de 5 espèces chimiques dégazées avec une volatilité décroissante.
+
+### $$\forall i \in ⟦ 1,n ⟧, \quad E_i>E_{i-1}$$
+### $$k^{(t)}_i = A_i e^{\frac{E_i}{RT^{(t)}}}$$
+### $$n = 5$$
+### $$\mu^{(t)}=\sum_{i=1}^{n} \int_{t_0}^{t}(\mu_i-\mu^{(t)}_i) (1-e^{-dt. k^{(t)}_i})$$
+
+### Méthode ESA
+
+Considération de 6 espèces chimiques dégazées par pallier.
 
 ### $$k^{(t)}_i = A_i e^{\frac{E_i}{RT^{(t)}}}$$
-### $$\mu^{(t)}=\sum_{i=1}^{n} \int_{t_0}^{t}\mu_i (1-e^{-dt. k^{(t)}_i})$$
+### $$\tau_i = \frac{1}{k^{(t)}_i}$$
+### $$j \in ⟦ 1,5 ⟧$$
+### $$n \in  ⟦ 4,9 ⟧$$
+### $$\mu_j=\sum_{i=1}^{n}\mu_i (1-e^{-\frac{t}{\tau_i}})$$
 
-L'algorithme consiste à minimiser l'erreur de la fonction (moindre carré) en ajustant les paramètres 
+### Fonctionnement du fitting
 
-suivant l'approximation jacobienne de la fonction objectif hessienne des moindres carrés
+L'algorithme consiste à minimiser l'erreur (moindre carré) de la fonction exponentielle en ajustant les paramètres.
 
-Chaque palier de température de la cinétique se voit attribué une espèce chimique approximé par une exponentielle
+Chaque palier de température de la cinétique se voit attribué un certain nombre d'espèces chimiques approximé par une exponentielle.
+
+### Paramètres d'initialisation
+
+L'algorithme est très sensible aux paramètres initiaux (gradient qui ne converge pas).
+
+| Paramètres initiaux CNES | $i \in ⟦ 1,n ⟧$|
+| :---: | :---: |
+| $E_i$ | $1500i + 500$  |
+| $A_i$ | $i10^i + 0.001$  |
+| $\mu_i$ | $0.8$  |
+
+| Paramètres initiaux ESA | $i \in ⟦ 1,5 ⟧,\quad j \in ⟦ 1,n ⟧ $|
+| :---: | :---: |
+| $\tau^j_i$ | $[0.5,...,0.5,0.5]$ |
+| $\mu^j_i$ | $[0.002,...,0.002,0.002]$  |
+
+Initialisation des paramètres [code Ref.](https://github.com/LanceryH/Cnes_LP_VB5E/blob/cab1dc12d166c8ba1ab3f4c076725c6f098306b8/resolution_CNES_M.py#L32C5-L36C44), [code Ref.](https://github.com/LanceryH/Cnes_LP_VB5E/blob/f3e286e73476426176acfa4ac20660d5a93cb20b/resolution_ESA.py#L39C1-L42C46)
+
+### Paramètres de sortie
+
+| Paramètres finaux CNES |
+| :---: |
+| $E_i$ |
+| $A_i$ |
+| $\mu_i$ |
+
+| Paramètres finaux ESA |
+| :---: |
+| $\tau^j_i$ |
+| $\mu^j_i$ |
+| $E^{i\rightarrow i+1}$ |
+| $K^{i\rightarrow i+1}_e$* |
+
+*Ke est le coéfficient directeur du facteur d'accélération vs $\Delta Température$.
 
 ----
 ### Application python
@@ -30,7 +76,7 @@ def function_TML(self, *params, time=0, temp=25):
       sum += (mi_s[0])*(1-np.exp(-np.array(time)*k_i_t))
       return sum
 ```
-Fonction applicant les moindres carrées sur l'équation 
+Fonction de fitting avec les moindres carrées
 [code Ref.2](https://github.com/LanceryH/Cnes_LP_VB5E/blob/cab1dc12d166c8ba1ab3f4c076725c6f098306b8/resolution_CNES_M.py#L51C1-L63C102)
 
 ```python
@@ -59,40 +105,34 @@ def objective(self, x, ind):
       return init_0_mu - mu_calc
 ```
 -----
-### Initialisation de chaque exponentielle
+### Résultats comparaison EC9323-2
 
-L'algorithme est trés sensible aux paramètres initiaux (gradient qui ne converge pas)
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/c809cb9b-ffea-4719-90ca-2823a25a7d4f" alt="drawing" width="45%" height="45%"/>
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/22659e6b-770d-4d23-ae27-855e5e59ab9d" alt="drawing" width="45%" height="45%"/>
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/f837df3a-7439-4373-a00c-1876256ed137" alt="drawing" width="45%" height="45%"/>
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/ef534afa-e6d7-4db0-9614-0320905f9fe0" alt="drawing" width="45%" height="45%"/>
 
-| Input parameters  | Value / $i \in (1,2,3,4,5)$|
-| :---: | :---: |
-| $E_i$ | $1500i + 500$  |
-| $A_i$ | $i10^i + 0.001$  |
-| $\mu_i$ | 0.8  |
-
-Initialisation des paramètres [code Ref.4](https://github.com/LanceryH/Cnes_LP_VB5E/blob/cab1dc12d166c8ba1ab3f4c076725c6f098306b8/resolution_CNES_M.py#L32C5-L36C44)
-
------
-<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/c809cb9b-ffea-4719-90ca-2823a25a7d4f" alt="drawing" width="70%" height="70%"/>
-
------
-## Prédiction du dégazage méthode MC ESA 
-----
-### Définition du sujet
-
-Il s'agit de la même méthode mais pour chaque palier/exponentielle, 6 espèces chimiques sont considérées
-
-### $$k^{(t)}_i = A_i e^{\frac{E_i}{RT^{(t)}}}$$
-### $$j \in (1,2,3,4,5)$$
-### $$n \in  ⟦ 4,9 ⟧$$
-### $$\mu_j=\sum_{i=1}^{n}\mu_i (1-e^{-\frac{dt}{\tau_i}})$$
-
-L'algorithme conciste à miniser l'erreur de la fonction (moindres carrées) en ajustant les paramètres suivant la méthode des gradients
-
-Chaque palier de température de la cinétique se voit attribué une espèce chimique approximé par une exponentielle
 
 ----
-<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/22659e6b-770d-4d23-ae27-855e5e59ab9d" alt="drawing" width="70%" height="70%"/>
+### Simulation
 
-## Régression polynomiale du maillage
-<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/f837df3a-7439-4373-a00c-1876256ed137" alt="drawing" width="70%" height="70%"/>
+La simulation d'un scénario se base sur les paramètres finaux calculés au préalable pour un matériaux donné et en déduit son aspect.
 
+$f(t,T)$ la fonction du segment parcourue par l'algorithme.
+
+### $$f_{a}^{b}(t,T)=\sum_{l=1}^{a} (\sum_{k=1}^{b} (\sum_{j=1}^{t^k_{max}} (\sum_{i=1}^{n_{esp}} (\mu_i (1-e^{(-\frac{t_j}{\tau_i.e^{(-K_e(T_j-T_{Ref}))}})})))+f_{l}^{k-1}(t_{max},T_{max}))+f_{l-1}^{k}(t_{max},T_{max}))$$
+
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/2015c8ba-332e-43cc-8661-9621cda7de3b" alt="drawing" width="45%" height="45%"/>
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/02fc81d4-582e-4aa6-bfb6-0cbe51ea6e3e" alt="drawing" width="45%" height="45%"/>
+
+----
+### Requirements
+
+```
+pip install xlrd
+pip install pandas
+pip install numpy
+pip install scipy
+pip install PyQt5
+pip install matplotlib
+```
