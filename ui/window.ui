@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1118</width>
+    <width>1117</width>
     <height>770</height>
    </rect>
   </property>
@@ -1561,7 +1561,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab_3">
      <attribute name="title">
@@ -1618,6 +1618,9 @@
      </widget>
     </widget>
     <widget class="QWidget" name="tab_6">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <attribute name="title">
       <string>Simulation 3D</string>
      </attribute>
@@ -1642,7 +1645,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1118</width>
+     <width>1117</width>
      <height>21</height>
     </rect>
    </property>
@@ -1666,14 +1669,6 @@
      <string>Graphe</string>
     </property>
     <addaction name="actionRafraichir"/>
-    <addaction name="separator"/>
-    <addaction name="actionImprimer"/>
-    <addaction name="actionCopier_Coller"/>
-   </widget>
-   <widget class="QMenu" name="menuOption">
-    <property name="title">
-     <string>Option</string>
-    </property>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -1683,7 +1678,6 @@
    </widget>
    <addaction name="menuFichier"/>
    <addaction name="menuGraphe"/>
-   <addaction name="menuOption"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
@@ -1749,7 +1743,7 @@
   </action>
   <action name="actionOpen">
    <property name="text">
-    <string>Open</string>
+    <string>Ouvrir</string>
    </property>
    <property name="font">
     <font>
