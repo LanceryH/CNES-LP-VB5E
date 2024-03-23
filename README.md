@@ -3,7 +3,7 @@
 
 ### Méthode CNES
 
-Considération de 5 espèces chimique dégazées avec une volatilité décroissante
+Considération de 5 espèces chimiques dégazées avec une volatilité décroissante
 
 ### $$\forall i \in ⟦ 1,n ⟧, \quad E_i>E_{i-1}$$
 ### $$k^{(t)}_i = A_i e^{\frac{E_i}{RT^{(t)}}}$$
@@ -12,7 +12,7 @@ Considération de 5 espèces chimique dégazées avec une volatilité décroissa
 
 ### Méthode ESA
 
-Considération de 6 espèces chimique dégazées par pallier
+Considération de 6 espèces chimiques dégazées par pallier
 
 ### $$k^{(t)}_i = A_i e^{\frac{E_i}{RT^{(t)}}}$$
 ### $$\tau_i = \frac{1}{k^{(t)}_i}$$
@@ -22,13 +22,13 @@ Considération de 6 espèces chimique dégazées par pallier
 
 ### Fonctionnement du fitting
 
-L'algorithme consiste à minimiser l'erreur (moindre carré) de la fonction exponentielle en ajustant les paramètres suivant l'approximation jacobienne de la fonction "objectif" hessienne.
+L'algorithme consiste à minimiser l'erreur (moindre carré) de la fonction exponentielle en ajustant les paramètres.
 
-Chaque palier de température de la cinétique se voit attribué un certain nombre d'espèces chimiques approximé par une exponentielle
+Chaque palier de température de la cinétique se voit attribué un certain nombre d'espèces chimiques approximé par une exponentielle.
 
 ### Paramètres d'initialisation
 
-L'algorithme est trés sensible aux paramètres initiaux (gradient qui ne converge pas)
+L'algorithme est très sensible aux paramètres initiaux (gradient qui ne converge pas).
 
 | Paramètres initiaux CNES | $i \in ⟦ 1,n ⟧$|
 | :---: | :---: |
@@ -45,8 +45,6 @@ Initialisation des paramètres [code Ref.](https://github.com/LanceryH/Cnes_LP_V
 
 ### Paramètres de sortie
 
-L'algorithme est trés sensible aux paramètres initiaux (gradient qui ne converge pas)
-
 | Paramètres finaux CNES |
 | :---: |
 | $E_i$ |
@@ -60,7 +58,7 @@ L'algorithme est trés sensible aux paramètres initiaux (gradient qui ne conver
 | $E^{i\rightarrow i+1}$ |
 | $K^{i\rightarrow i+1}_e$* |
 
-*Ke est le coéfficient directeur du facteur d'accélération vs $\Delta$Température
+*Ke est le coéfficient directeur du facteur d'accélération vs $\Delta Température$
 
 ----
 ### Application python
@@ -118,9 +116,9 @@ def objective(self, x, ind):
 ----
 ### Simulation
 
-La simulation d'un scénario se base sur les paramètres finaux calculé au préalable pour un matériaux donnée et en déduit son aspect.
+La simulation d'un scénario se base sur les paramètres finaux calculés au préalable pour un matériaux donné et en déduit son aspect.
 
-$f(t,T)$ la fonction du segment parcouru par l'algorithme
+$f(t,T)$ la fonction du segment parcourue par l'algorithme
 
 ### $$f_{a}^{b}(t,T)=\sum_{l=1}^{a} (\sum_{k=1}^{b} (\sum_{j=1}^{t^k_{max}} (\sum_{i=1}^{n_{esp}} (\mu_i (1-e^{(-\frac{t_j}{\tau_i.e^{(-K_e(T_j-T_{Ref}))}})})))+f_{l}^{k-1}(t_{max},T_{max}))+f_{l-1}^{k}(t_{max},T_{max}))$$
 
