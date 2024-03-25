@@ -16,7 +16,6 @@ class Ui(QtWidgets.QMainWindow):
         super(Ui, self).__init__()
         uic.loadUi(dir_path + '\\ui\\window.ui', self)
         
-        self.setWindowIcon(QIcon(dir_path + '\\logo\\cnes.png'))
         self.setFixedSize(1120,760)
         self.setWindowTitle("LP/VB5E")
         self.path = None
