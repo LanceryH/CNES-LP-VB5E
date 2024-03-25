@@ -15,10 +15,10 @@ class Ui(QtWidgets.QMainWindow):
     def __init__(self):
         super(Ui, self).__init__()
         uic.loadUi(dir_path + '\\ui\\window.ui', self)
-        self.setWindowIcon(QIcon(dir_path + '\\logo\\logo.png'))
         
+        self.setWindowIcon(QIcon(dir_path + '\\logo\\logo.png'))
         self.setFixedSize(1120,760)
-        self.setWindowTitle("LP/VB5E")
+        self.setWindowTitle("LP_PY_5E")
         self.path = None
         self.temp_total_simu = []
 
@@ -187,9 +187,15 @@ class Ui(QtWidgets.QMainWindow):
         df.to_excel(f"RP_{self.path.split("/")[-1][:-4]}.xlsx", index=True, header=True)
 
     def pushButton_3_fonction(self):
-        df = pd.concat([pd.DataFrame({'Time [min]': np.linspace(0,self.t_tot,len(self.result_simu))}),
-                        pd.DataFrame({'Température [°C]': self.temp_total_simu}),
-                        pd.DataFrame({'TML_sim [%]': self.result_simu})], axis=1)
+        if self.comboBox_9.currentText() == "Classique":
+            df = pd.concat([pd.DataFrame({'Time [min]': np.linspace(0,self.t_tot,len(self.result_simu))}),
+                            pd.DataFrame({'Température [°C]': self.temp_total_simu}),
+                            pd.DataFrame({'TML_sim [%]': self.result_simu})], axis=1)
+        
+        if self.comboBox_9.currentText() == "RegressionPol":
+            df = pd.concat([pd.DataFrame({'Time [min]': np.linspace(0,self.t_tot,self.t_tot)}),
+                            pd.DataFrame({'Température [°C]': self.temp_total_simu}),
+                            pd.DataFrame({'TML_sim [%]': self.list_z_glob_ext})], axis=1)
 
 
         df.to_excel(f"RS_{self.path.split("/")[-1][:-4]}.xlsx", index=True, header=True)
@@ -232,12 +238,13 @@ class Ui(QtWidgets.QMainWindow):
                                         antialiased=True)
                 
             if self.comboBox_7.currentText() == "CNES fast":
+                self.t_tot = 0
+                self.result_simu = [0]
+                
                 if self.comboBox_9.currentText() == "Classique":
                     self.tab_6.setDisabled(True)
                     n_seg = len(self.data)
-                    self.t_tot = 0
-                    # Boucle par segment de l'User
-                    self.result_simu = [0]
+
                     for ind_k in range(n_seg):
                         tf = int(self.tableWidget.item(ind_k,2).text())
                         time_seg = np.linspace(0,tf,tf)
@@ -285,54 +292,52 @@ class Ui(QtWidgets.QMainWindow):
                     b = self.twin_2D_sim.plot(np.linspace(0,self.t_tot,self.t_tot),self.temp_total_simu,"orange", label="Température",linewidth=1)
                 
                 if self.comboBox_9.currentText() == "RegressionPol": 
-                        try :
-                            n_seg = len(self.data)   
-                            self.tab_6.setEnabled(True)
-                            self.t_tot = 0
-                            list_z_glob = []
-                            list_z_glob_ext = []
-                            # Boucle par segment de l'User
-                            self.result_simu = [0]
-                            for ind_k in range(n_seg):
-                                tf = int(self.tableWidget.item(ind_k,2).text())
-                                time_seg = np.linspace(0,tf,tf)
-                                temp_seg = np.linspace(int(self.tableWidget.item(ind_k,0).text()),int(self.tableWidget.item(ind_k,1).text()),tf)
-                                self.t_tot += tf
-                                list_x = []
-                                list_y = []
-                                list_z = []
-                                self.temp_total_simu.extend(temp_seg)
-                                for ind_d,time in enumerate(np.linspace(0,tf,tf)):
-                                    list_x.append(time)
-                                    list_y.append(temp_seg[ind_d])
-                                    list_z.append(self.system.result_dic["Z_3D_smooth"][int(100*(temp_seg[ind_d]-25.01)/100),int(180*time/7200)])
-                                    
-                                expo_encour = np.array(list_z)
-                                if len(list_z_glob)>0:
-                                    list_z_glob_ext.extend(expo_encour-list_z_glob[-1][:len(expo_encour)]+list_z_glob_ext[-1])
-                                    list_z_glob.append(expo_encour)
-                                    
-                                else:
-                                    list_z_glob.append(expo_encour)
-                                    list_z_glob_ext.extend(expo_encour)
+                    try :
+                        n_seg = len(self.data)   
+                        self.tab_6.setEnabled(True)
+                        list_z_glob = []
+                        self.list_z_glob_ext = []
 
-                                    
-                                self.ax_3D_sim.plot(list_x,list_y,list_z,"red")
-                                self.ax_3D_sim.plot(np.array(list_x)+self.t_tot-tf,list_y,list_z_glob[-1],"red")
-                            a = self.axs_2D_sim.plot(np.linspace(0,self.t_tot,self.t_tot),list_z_glob_ext,"black", label="simu",linewidth=1)
-                            b = self.twin_2D_sim.plot(np.linspace(0,self.t_tot,self.t_tot),self.temp_total_simu,"orange", label="Température",linewidth=1)
+                        for ind_k in range(n_seg):
+                            tf = int(self.tableWidget.item(ind_k,2).text())
+                            time_seg = np.linspace(0,tf,tf)
+                            temp_seg = np.linspace(int(self.tableWidget.item(ind_k,0).text()),int(self.tableWidget.item(ind_k,1).text()),tf)
+                            self.t_tot += tf
+                            list_x = []
+                            list_y = []
+                            list_z = []
+                            self.temp_total_simu.extend(temp_seg)
+                            for ind_d,time in enumerate(np.linspace(0,tf,tf)):
+                                list_x.append(time)
+                                list_y.append(temp_seg[ind_d])
+                                list_z.append(self.system.result_dic["Z_3D_smooth"][int(100*(temp_seg[ind_d]-25.01)/100),int(180*time/7200)])
+                                
+                            expo_encour = np.array(list_z)
+                            if len(list_z_glob)>0:
+                                self.list_z_glob_ext.extend(expo_encour-list_z_glob[-1][:len(expo_encour)]+self.list_z_glob_ext[-1])
+                                list_z_glob.append(expo_encour)
+                                
+                            else:
+                                list_z_glob.append(expo_encour)
+                                self.list_z_glob_ext.extend(expo_encour)
 
-                            self.ax_3D_sim.plot_wireframe(self.system.result_dic["X_3D_smooth"], 
-                                                        self.system.result_dic["Y_3D_smooth"], 
-                                                        self.system.result_dic["Z_3D_smooth"], 
-                                                        color="black", 
-                                                        linewidth=1,
-                                                        antialiased=True,
-                                                        alpha=0.3)
-                            self.ax_3D_sim.plot(np.linspace(0,self.t_tot,self.t_tot)[::100],self.temp_total_simu[::100],np.zeros(self.t_tot)[::100],"orange")
-                        except:
-                            self.msg_3.exec_()
-                            pass
+                                
+                            self.ax_3D_sim.plot(list_x,list_y,list_z,"red")
+                            self.ax_3D_sim.plot(np.array(list_x)+self.t_tot-tf,list_y,list_z_glob[-1],"red")
+                        a = self.axs_2D_sim.plot(np.linspace(0,self.t_tot,self.t_tot),self.list_z_glob_ext,"black", label="simu",linewidth=1)
+                        b = self.twin_2D_sim.plot(np.linspace(0,self.t_tot,self.t_tot),self.temp_total_simu,"orange", label="Température",linewidth=1)
+
+                        self.ax_3D_sim.plot_wireframe(self.system.result_dic["X_3D_smooth"], 
+                                                    self.system.result_dic["Y_3D_smooth"], 
+                                                    self.system.result_dic["Z_3D_smooth"], 
+                                                    color="black", 
+                                                    linewidth=1,
+                                                    antialiased=True,
+                                                    alpha=0.3)
+                        self.ax_3D_sim.plot(np.linspace(0,self.t_tot,self.t_tot)[::100],self.temp_total_simu[::100],np.zeros(self.t_tot)[::100],"orange")
+                    except:
+                        self.msg_3.exec_()
+                        pass
             if self.comboBox_7.currentText() == "ESTEC":
                 
                 n_seg = len(self.data)
