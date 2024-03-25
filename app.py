@@ -16,7 +16,7 @@ class Ui(QtWidgets.QMainWindow):
         super(Ui, self).__init__()
         uic.loadUi(dir_path + '\\ui\\window.ui', self)
         
-        self.setWindowIcon(QIcon('.\\logo\\cnes.png'))
+        self.setWindowIcon(QIcon(dir_path + '\\logo\\cnes.png'))
         self.setFixedSize(1120,760)
         self.setWindowTitle("LP/VB5E")
         self.path = None
@@ -39,19 +39,23 @@ class Ui(QtWidgets.QMainWindow):
 
         self.figure_2D, self.axs_2D= plt.subplots(2, 1, sharex=True, gridspec_kw={"height_ratios": [2,1]})#, figsize=(10, 4))
         self.figure_2D.tight_layout(rect=[0.015, 0, 0.95, 0.985])
-        self.axs_2D[0].grid()
         self.axs_2D[1].grid()
         self.axs_2D[1].set_xlabel("Temps [minutes]")
         self.axs_2D[0].set_ylabel("Perte de masse [%]")
         self.axs_2D[0].set_title("Prédiction du dégazage au cours du temps / ID: XXXX")
+        self.axs_2D[0].patch.set_alpha(0)
+        self.axs_2D[0].grid()
         self.twin_2D = self.axs_2D[0].twinx()
         self.twin_2D.set_ylabel("Température [°C]")
         self.twin_2D.set_ylim((0,140))
+       
+
         self.canvas_2D = FigureCanvas(self.figure_2D)
         self.toolbar_2D = NavigationToolbar(self.canvas_2D,self)
         self.layout_of_2D = QtWidgets.QVBoxLayout()
         self.layout_of_2D.addWidget(self.toolbar_2D)
         self.layout_of_2D.addWidget(self.canvas_2D)
+        self.twin_2D.set_zorder(self.twin_2D .get_zorder() - 1)
         self.groupBox_11.setLayout(self.layout_of_2D)
 
         self.figure_2D_sim, self.axs_2D_sim = plt.subplots(1, 1)#, figsize=(10, 4))
@@ -59,10 +63,12 @@ class Ui(QtWidgets.QMainWindow):
         self.axs_2D_sim.grid()
         self.axs_2D_sim.set_xlabel("Temps [minutes]")
         self.axs_2D_sim.set_ylabel("Perte de masse [%]")
+        self.axs_2D_sim.patch.set_alpha(0)
         self.twin_2D_sim = self.axs_2D_sim.twinx()
         self.twin_2D_sim.set_ylabel("Température [°C]")
         self.twin_2D_sim.set_title("Simulation du dégazage au cours du temps / ID: XXXX")
         self.twin_2D_sim.set_ylim((0,140))
+        self.twin_2D_sim.set_zorder(self.twin_2D .get_zorder() - 1)
         self.canvas_2D_sim = FigureCanvas(self.figure_2D_sim)
         self.toolbar_2D_sim = NavigationToolbar(self.canvas_2D_sim,self)
         self.layout_of_2D_sim = QtWidgets.QVBoxLayout()
@@ -106,6 +112,9 @@ class Ui(QtWidgets.QMainWindow):
         self.actionAffichage_Temp_rature.triggered.connect(self.actionAffichage_Temp_rature_fonction)
         self.actionRafraichir.triggered.connect(self.actionRafraichir_fonction)
         self.actionRead_me.triggered.connect(self.actionRead_me_fonction)
+
+        self.pushButton_2.clicked.connect(self.pushButton_2_fonction)
+        self.pushButton_3.clicked.connect(self.pushButton_3_fonction)
         self.pushButton_5.clicked.connect(self.pushButton_5_fonction)
         self.pushButton_6.clicked.connect(self.pushButton_6_fonction)
 
@@ -136,6 +145,55 @@ class Ui(QtWidgets.QMainWindow):
     def tableWidget_fonction(self):
         return
 
+    def pushButton_2_fonction(self):
+        list_params = []
+        list_lab_params = []
+
+        if self.comboBox_7.currentText() == "CNES" or self.comboBox_7.currentText() == "CNES fast":
+            params = ["A","E","mu"]
+            for ind_i, expo_param in enumerate(self.system.result_dic["parameter_exp"]):
+                for ind_j, val in enumerate(expo_param):
+                    list_params.append(val)
+                    list_lab_params.append(f"{params[ind_j]}{ind_i+1}")
+
+        if self.comboBox_7.currentText() == "ESTEC":
+            params = ["to","mu","K","A"]
+            for ind_i in range(0,len(self.system.result_dic["parameter_exp"])-1):    
+                list_lab_params.append(f"{params[2]}{ind_i+1}->{ind_i+2}")
+                list_lab_params.append(f"{params[3]}{ind_i+1}->{ind_i+2}")
+                list_params.append(self.system.result_dic["coeff_transition"][ind_i][0])
+                list_params.append(self.system.result_dic["coeff_transition"][ind_i][1])
+            for ind_i, expo_param in enumerate(self.system.result_dic["parameter_exp"]):
+                for ind_j, val in enumerate(expo_param):
+                    list_params.append(val)
+                    if ind_j<6:
+                        list_lab_params.append(f"{params[0]}{ind_i+1}")
+                    else:
+                        list_lab_params.append(f"{params[1]}{ind_i+1}")
+            
+
+        df = pd.concat([pd.DataFrame({'Params_label': list_lab_params}),
+                        pd.DataFrame({'Params': list_params}),
+                        pd.DataFrame({'Time [min]': self.table_data["time_tot_tot"]}),
+                        pd.DataFrame({'Température [°C]': self.table_data["temp_tot_tot"]}),
+                        pd.DataFrame({'TML_pred [%]': self.system.result_dic["fitted data 5exp"]}),
+                        pd.DataFrame({'pred expo1 [%]': self.system.result_dic["fitted data exp"][0]}),
+                        pd.DataFrame({'pred expo2 [%]': self.system.result_dic["fitted data exp"][1]}),
+                        pd.DataFrame({'pred expo3 [%]': self.system.result_dic["fitted data exp"][2]}),
+                        pd.DataFrame({'pred expo4 [%]': self.system.result_dic["fitted data exp"][3]}),
+                        pd.DataFrame({'pred expo5 [%]': self.system.result_dic["fitted data exp"][4]})], axis=1)
+
+
+        df.to_excel(f"RP_{self.path.split("/")[-1][:-4]}.xlsx", index=True, header=True)
+
+    def pushButton_3_fonction(self):
+        df = pd.concat([pd.DataFrame({'Time [min]': np.linspace(0,self.t_tot,len(self.result_simu))}),
+                        pd.DataFrame({'Température [°C]': self.temp_total_simu}),
+                        pd.DataFrame({'TML_sim [%]': self.result_simu})], axis=1)
+
+
+        df.to_excel(f"RS_{self.path.split("/")[-1][:-4]}.xlsx", index=True, header=True)
+
     def pushButton_6_fonction(self):
         self.temp_total_simu = []
         self.axs_2D_sim.cla()
@@ -144,27 +202,27 @@ class Ui(QtWidgets.QMainWindow):
         self.twin_2D_sim = self.axs_2D_sim.twinx()
         try:
             if self.comboBox_7.currentText() == "CNES":
-                result_simu = [0]
-                t_tot = 0
+                self.result_simu = [0]
+                self.t_tot = 0
                 for ind_i in range(len(self.data)):
                     tf = int(self.tableWidget.item(ind_i,2).text())
                     time = np.linspace(0,tf,tf)
                     temp = np.linspace(int(self.tableWidget.item(ind_i,0).text()),int(self.tableWidget.item(ind_i,1).text()),tf)
-                    t_tot += tf
+                    self.t_tot += tf
                     self.temp_total_simu.extend(temp)
                     result_palier=[]
                     for ind_j in range(len(temp)):
                         result_expo=0
                         for ind_k in range(5):
                             result_expo+=self.system.function_TML_simmu(self.system.result_dic["parameter_exp"][ind_k],time=time[ind_j],temp=temp[ind_j])
-                        if result_expo>result_simu[-1]:
+                        if result_expo>self.result_simu[-1]:
                             result_palier.append(result_expo)
                         else:
-                            result_palier.append(result_simu[-1])
-                    result_simu.extend(result_palier)
-                result_simu.pop(0)
-                a = self.axs_2D_sim.plot(np.linspace(0,t_tot,len(result_simu)),result_simu,"black", label="simu",linewidth=1)
-                b = self.twin_2D_sim.plot(np.linspace(0,t_tot,len(self.temp_total_simu)),self.temp_total_simu,"orange", label="Température",linewidth=1)
+                            result_palier.append(self.result_simu[-1])
+                    self.result_simu.extend(result_palier)
+                self.result_simu.pop(0)
+                a = self.axs_2D_sim.plot(np.linspace(0,self.t_tot,len(self.result_simu)),self.result_simu,"black", label="simu",linewidth=1)
+                b = self.twin_2D_sim.plot(np.linspace(0,self.t_tot,len(self.temp_total_simu)),self.temp_total_simu,"orange", label="Température",linewidth=1)
 
                 self.ax_3D_sim.plot_wireframe(self.system.result_dic["X_3D_smooth"], 
                                         self.system.result_dic["Y_3D_smooth"], 
@@ -177,9 +235,9 @@ class Ui(QtWidgets.QMainWindow):
                 if self.comboBox_9.currentText() == "Classique":
                     self.tab_6.setDisabled(True)
                     n_seg = len(self.data)
-                    t_tot = 0
+                    self.t_tot = 0
                     # Boucle par segment de l'User
-                    result_simu = [0]
+                    self.result_simu = [0]
                     for ind_k in range(n_seg):
                         tf = int(self.tableWidget.item(ind_k,2).text())
                         time_seg = np.linspace(0,tf,tf)
@@ -187,7 +245,7 @@ class Ui(QtWidgets.QMainWindow):
                         temp_pal = []
                         time_pal = []
                         list_pal = []
-                        t_tot += tf
+                        self.t_tot += tf
                         self.temp_total_simu.extend(temp_seg)
 
                         for ind_l in range(1,6):
@@ -220,26 +278,26 @@ class Ui(QtWidgets.QMainWindow):
                             add_me = np.max(result_seg)
                             result_seg.extend(np.array(result_pal)+add_me)
                         result_seg.pop(0)
-                        add_me = np.max(result_simu)
-                        result_simu.extend(np.array(result_seg)+add_me)     
-                    result_simu.pop(0)
-                    a = self.axs_2D_sim.plot(np.linspace(0,t_tot,t_tot),result_simu[:t_tot],"black", label="simu",linewidth=1)
-                    b = self.twin_2D_sim.plot(np.linspace(0,t_tot,t_tot),self.temp_total_simu,"orange", label="Température",linewidth=1)
+                        add_me = np.max(self.result_simu)
+                        self.result_simu.extend(np.array(result_seg)+add_me)     
+                    self.result_simu.pop(0)
+                    a = self.axs_2D_sim.plot(np.linspace(0,self.t_tot,self.t_tot),self.result_simu[:self.t_tot],"black", label="simu",linewidth=1)
+                    b = self.twin_2D_sim.plot(np.linspace(0,self.t_tot,self.t_tot),self.temp_total_simu,"orange", label="Température",linewidth=1)
                 
                 if self.comboBox_9.currentText() == "RegressionPol": 
                         try :
                             n_seg = len(self.data)   
                             self.tab_6.setEnabled(True)
-                            t_tot = 0
+                            self.t_tot = 0
                             list_z_glob = []
                             list_z_glob_ext = []
                             # Boucle par segment de l'User
-                            result_simu = [0]
+                            self.result_simu = [0]
                             for ind_k in range(n_seg):
                                 tf = int(self.tableWidget.item(ind_k,2).text())
                                 time_seg = np.linspace(0,tf,tf)
                                 temp_seg = np.linspace(int(self.tableWidget.item(ind_k,0).text()),int(self.tableWidget.item(ind_k,1).text()),tf)
-                                t_tot += tf
+                                self.t_tot += tf
                                 list_x = []
                                 list_y = []
                                 list_z = []
@@ -251,7 +309,6 @@ class Ui(QtWidgets.QMainWindow):
                                     
                                 expo_encour = np.array(list_z)
                                 if len(list_z_glob)>0:
-
                                     list_z_glob_ext.extend(expo_encour-list_z_glob[-1][:len(expo_encour)]+list_z_glob_ext[-1])
                                     list_z_glob.append(expo_encour)
                                     
@@ -261,9 +318,9 @@ class Ui(QtWidgets.QMainWindow):
 
                                     
                                 self.ax_3D_sim.plot(list_x,list_y,list_z,"red")
-                                self.ax_3D_sim.plot(np.array(list_x)+t_tot-tf,list_y,list_z_glob[-1],"red")
-                            a = self.axs_2D_sim.plot(np.linspace(0,t_tot,t_tot),list_z_glob_ext,"black", label="simu",linewidth=1)
-                            b = self.twin_2D_sim.plot(np.linspace(0,t_tot,t_tot),self.temp_total_simu,"orange", label="Température",linewidth=1)
+                                self.ax_3D_sim.plot(np.array(list_x)+self.t_tot-tf,list_y,list_z_glob[-1],"red")
+                            a = self.axs_2D_sim.plot(np.linspace(0,self.t_tot,self.t_tot),list_z_glob_ext,"black", label="simu",linewidth=1)
+                            b = self.twin_2D_sim.plot(np.linspace(0,self.t_tot,self.t_tot),self.temp_total_simu,"orange", label="Température",linewidth=1)
 
                             self.ax_3D_sim.plot_wireframe(self.system.result_dic["X_3D_smooth"], 
                                                         self.system.result_dic["Y_3D_smooth"], 
@@ -272,17 +329,17 @@ class Ui(QtWidgets.QMainWindow):
                                                         linewidth=1,
                                                         antialiased=True,
                                                         alpha=0.3)
-                            self.ax_3D_sim.plot(np.linspace(0,t_tot,t_tot)[::100],self.temp_total_simu[::100],np.zeros(t_tot)[::100],"orange")
+                            self.ax_3D_sim.plot(np.linspace(0,self.t_tot,self.t_tot)[::100],self.temp_total_simu[::100],np.zeros(self.t_tot)[::100],"orange")
                         except:
                             self.msg_3.exec_()
                             pass
             if self.comboBox_7.currentText() == "ESTEC":
                 
                 n_seg = len(self.data)
-                t_tot = 0
+                self.t_tot = 0
 
                 # Boucle par segment de l'User
-                result_simu = [0]
+                self.result_simu = [0]
                 for ind_k in range(n_seg):
                     tf = int(self.tableWidget.item(ind_k,2).text())
                     time_seg = np.linspace(0,tf,tf)
@@ -290,7 +347,7 @@ class Ui(QtWidgets.QMainWindow):
                     temp_pal = []
                     time_pal = []
                     list_pal = []
-                    t_tot += tf
+                    self.t_tot += tf
                     self.temp_total_simu.extend(temp_seg)
 
                     for ind_l in range(1,6):
@@ -324,12 +381,12 @@ class Ui(QtWidgets.QMainWindow):
                         add_me = np.max(result_seg)
                         result_seg.extend(np.array(result_pal)+add_me)
                     result_seg.pop(0)
-                    add_me = np.max(result_simu)
-                    result_simu.extend(np.array(result_seg)+add_me)           
-                result_simu.pop(0)
+                    add_me = np.max(self.result_simu)
+                    self.result_simu.extend(np.array(result_seg)+add_me)           
+                self.result_simu.pop(0)
 
-                a = self.axs_2D_sim.plot(np.linspace(0,t_tot,t_tot),result_simu[:t_tot],"black", label="simu",linewidth=1)
-                b = self.twin_2D_sim.plot(np.linspace(0,t_tot,t_tot),self.temp_total_simu,"orange", label="Température",linewidth=1)
+                a = self.axs_2D_sim.plot(np.linspace(0,self.t_tot,self.t_tot),self.result_simu[:self.t_tot],"black", label="simu",linewidth=1)
+                b = self.twin_2D_sim.plot(np.linspace(0,self.t_tot,self.t_tot),self.temp_total_simu,"orange", label="Température",linewidth=1)
 
                 self.ax_3D_sim.plot_wireframe(self.system.result_dic["X_3D_smooth"], 
                                         self.system.result_dic["Y_3D_smooth"], 
@@ -341,12 +398,15 @@ class Ui(QtWidgets.QMainWindow):
             lns = a + b
             labs = [l.get_label() for l in lns]
             self.twin_2D_sim.set_ylabel("Température [°C]")
+            self.twin_2D_sim.set_zorder(self.twin_2D .get_zorder() - 1)
             self.axs_2D_sim.set_xlabel("Temps [minutes]")
             self.axs_2D_sim.set_ylabel("Perte de masse [%]")    
             self.axs_2D_sim.set_title("Simulation du dégazage au cours du temps / ID: "+self.path.split("/")[-1])
             self.axs_2D_sim.legend(lns, labs)
             self.axs_2D_sim.grid()
+            self.axs_2D_sim.patch.set_alpha(0)
             self.twin_2D_sim.set_ylim((0,140))
+            self.twin_2D.set_zorder(self.twin_2D .get_zorder() - 1)
             self.ax_3D_sim.grid()
             self.ax_3D_sim.set_xlabel("Temps [minutes]")
             self.ax_3D_sim.set_ylabel("ISO [°C]")
@@ -403,25 +463,24 @@ class Ui(QtWidgets.QMainWindow):
             self.treeWidget.hide()
 
     def menuNew_fonction(self):
-        print("New")
         return
 
     def actionAffichage_Temp_rature_fonction(self):
-        self.twin_2D.plot(self.table_data["time_tot"],self.table_data["temp_tot"],"orange", label="temp", linewidth=1)
-        self.twin_2D_sim.plot(self.table_data["time_tot"],self.temp_total_simu)
-        self.canvas_2D.draw()
-
+        return
+    
     def actionRafraichir_fonction(self):
         self.axs_2D[0].cla()
         self.axs_2D[1].cla()
         self.axs_2D[0].grid()
         self.axs_2D[1].grid()
+        self.axs_2D[0].patch.set_alpha(0)
         self.axs_2D[1].set_xlabel("Temps [minutes]")
         self.axs_2D[0].set_ylabel("Perte de masse [%]")
         self.canvas_2D.draw()
 
         self.axs_2D_sim.cla()
         self.axs_2D_sim.grid()
+        self.axs_2D_sim.patch.set_alpha(0)
         self.axs_2D_sim.set_xlabel("Temps [minutes]")
         self.axs_2D_sim.set_ylabel("Perte de masse [%]")
         self.canvas_2D_sim.draw()
@@ -447,7 +506,7 @@ class Ui(QtWidgets.QMainWindow):
         webbrowser.open('https://github.com/LanceryH/Cnes_LP_VB5E/blob/main/README.md')
 
     def actionOpen_fonction(self):
-        path, filter = QtWidgets.QFileDialog.getOpenFileName(self, 'Select file', '', 'xlsx(*.xlsx),xls(*.xls)')
+        path, filter = QtWidgets.QFileDialog.getOpenFileName(self, 'Select file', '', '(*.xlsx *.xls)')
         if path:
             self.path = path
             self.table_data, self.data_expo = clear_data(self.path)
@@ -457,6 +516,7 @@ class Ui(QtWidgets.QMainWindow):
             self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b",label="data", linewidth=1)
             self.axs_2D[0].set_ylabel("Perte de masse [%]")
             self.axs_2D[0].grid()
+            self.axs_2D[0].patch.set_alpha(0)
             self.axs_2D[0].legend()
             self.canvas_2D.draw() 
         except:
@@ -472,6 +532,10 @@ class Ui(QtWidgets.QMainWindow):
         import resolution_CNES_M as Res_CNES_M
 
         try:
+            self.axs_2D[0].cla()
+            self.axs_2D[1].cla()
+            self.ax_3D.cla()
+            
             if self.comboBox_7.currentText() == "CNES":
                 self.treeWidget_2.hide()
                 self.tableWidget.hide()
@@ -485,8 +549,7 @@ class Ui(QtWidgets.QMainWindow):
                     self.treeWidget.topLevelItem(ind_i).child(1).setText(1, f'{np.round(self.system.result_dic["parameter_exp"][ind_i][1],3)}')
                     self.treeWidget.topLevelItem(ind_i).child(2).setText(1, f'{np.round(self.system.result_dic["parameter_exp"][ind_i][0],3)}')
 
-                self.axs_2D[0].cla()
-                self.axs_2D[1].cla()
+                
                 a = self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data", linewidth=1)
                 b = self.axs_2D[0].plot(self.table_data["time_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction CNES", linewidth=1)
                 markers = ["s","D","o","x","v"]
@@ -498,7 +561,7 @@ class Ui(QtWidgets.QMainWindow):
                                     #marker=markers[ind_i],
                                     markersize=2,
                                     linewidth=1)
-                self.ax_3D.cla()
+                
                 self.ax_3D.plot_wireframe(self.system.result_dic["X_3D_smooth"], 
                                         self.system.result_dic["Y_3D_smooth"], 
                                         self.system.result_dic["Z_3D_smooth"], 
@@ -527,8 +590,6 @@ class Ui(QtWidgets.QMainWindow):
                 self.treeWidget_2.topLevelItem(10).setText(1, f'{np.round(self.system.result_dic["coeff_transition"][3][0],8)}')
                 self.treeWidget_2.topLevelItem(11).setText(1, f'{np.round(self.system.result_dic["coeff_transition"][3][1],8)}')
 
-                self.axs_2D[0].cla()
-                self.axs_2D[1].cla()
                 a = self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data", linewidth=1)
                 b = self.axs_2D[0].plot(self.table_data["time_tot_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction ESA", linewidth=1)
                 markers = ["s","D","o","x","v"]
@@ -541,7 +602,6 @@ class Ui(QtWidgets.QMainWindow):
                                                         #marker=markers[ind_i],
                                                         linewidth=1)
                     
-                self.ax_3D.cla()
                 self.ax_3D.plot_wireframe(self.system.result_dic["X_3D_smooth"], 
                                         self.system.result_dic["Y_3D_smooth"], 
                                         self.system.result_dic["Z_3D_smooth"], 
@@ -562,8 +622,6 @@ class Ui(QtWidgets.QMainWindow):
                     self.treeWidget.topLevelItem(ind_i).child(1).setText(1, f'{np.round(self.system.result_dic["parameter_exp"][ind_i][1],3)}')
                     self.treeWidget.topLevelItem(ind_i).child(2).setText(1, f'{np.round(self.system.result_dic["parameter_exp"][ind_i][0],3)}')
 
-                self.axs_2D[0].cla()
-                self.axs_2D[1].cla()
                 a = self.axs_2D[0].plot(self.table_data["time_tot"],self.table_data["mu_tot"],"b", label="data", linewidth=1)
                 b = self.axs_2D[0].plot(self.table_data["time_tot_tot"],self.system.result_dic["fitted data 5exp"],"r--", label="prediction CNES", linewidth=1)
                 markers = ["s","D","o","x","v"]
@@ -576,7 +634,6 @@ class Ui(QtWidgets.QMainWindow):
                                                         #marker=markers[ind_i],
                                                         linewidth=1)
                 
-                self.ax_3D.cla()
                 self.ax_3D.plot_wireframe(self.system.result_dic["X_3D_smooth"], 
                                         self.system.result_dic["Y_3D_smooth"], 
                                         self.system.result_dic["Z_3D_smooth"], 
@@ -593,6 +650,8 @@ class Ui(QtWidgets.QMainWindow):
             self.axs_2D[0].set_title("Prédiction du dégazage au cours du temps / ID: "+self.path.split("/")[-1])
             self.axs_2D[0].grid()
             self.axs_2D[1].grid()
+            self.axs_2D[0].patch.set_alpha(0)
+            self.twin_2D.set_zorder(self.twin_2D .get_zorder() - 1)
             c = self.twin_2D.plot(self.table_data["time_tot"],self.table_data["temp_tot"],"orange", label="Température", linewidth=1)  
             lns = a + b + c
             labs = [l.get_label() for l in lns] 
