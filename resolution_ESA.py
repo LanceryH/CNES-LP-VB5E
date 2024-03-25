@@ -87,7 +87,6 @@ class Equations_ESA:
             Ki_i1 = (d_m_2/d_T_2)/(d_m_1/d_T_1)
             Ea = np.log(Ki_i1)*self.R*self.table_data["time"][ind_i][2]*self.table_data["temp"][ind_i+1][2]/(self.table_data["temp"][ind_i+1][2]-self.table_data["temp"][ind_i][2])
             self.result_dic["coeff_transition"].append([Ki_i1*Ki,Ea])
-            print("Ki_i1",Ki_i1)
             Ki=Ki_i1*Ki
 
         # Enregistrement des data
