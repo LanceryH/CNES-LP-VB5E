@@ -117,6 +117,10 @@ def objective(self, x, ind):
 ### Simulation
 
 La simulation d'un scénario se base sur les paramètres finaux calculés au préalable pour un matériaux donné et en déduit son aspect.
+Pour la méthode classique Cnes il s'agit d'une simple somme des 5 expo avec le même $T$, $t$.
+### $$f(t,T) =\sum_{i=1}^{n} \int_{t_0}^{t} \mu_i (1-e^{-dt. k^{(t,T)}_i})$$
+
+Pour la méthode du Cnes fast ou ESTEC on utilisera la fonction:
 
 $f(t,T)$ la fonction du segment parcourue par l'algorithme.
 
