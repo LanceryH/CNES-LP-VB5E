@@ -95,10 +95,7 @@ class Ui(QtWidgets.QMainWindow):
         self.layout_of_3D_sim.addWidget(self.toolbar_3D_sim)
         self.layout_of_3D_sim.addWidget(self.canvas_3D_sim)
         self.groupBox_15.setLayout(self.layout_of_3D_sim)
-        self.actionNew.triggered.connect(self.menuNew_fonction)
         self.actionOpen.triggered.connect(self.actionOpen_fonction)
-        self.actionRecent.triggered.connect(self.actionRecent_fonction)
-        self.actionAffichage_Temp_rature.triggered.connect(self.actionAffichage_Temp_rature_fonction)
         self.actionRafraichir.triggered.connect(self.actionRafraichir_fonction)
         self.actionRead_me.triggered.connect(self.actionRead_me_fonction)
         self.pushButton_2.clicked.connect(self.pushButton_2_fonction)
@@ -386,41 +383,45 @@ class Ui(QtWidgets.QMainWindow):
 
     def spinBox_8_fonction(self):
         """Fonction affichage données dans la table"""
-        self.temp_total_simu = []
-        self.tableWidget.setRowCount(int(self.spinBox_8.value()))
-        self.tableWidget.itemChanged.connect(self.tableWidget_fonction)   
-        self.data = []
-        for ind_i in range(1,int(self.spinBox_8.value())+1):
-            self.data.append((str(25*ind_i),str(25*ind_i),str(1440)))
-        for i, (T_init, T_fin, Duree) in enumerate(self.data):
-            item_T_init = QTableWidgetItem(T_init)
-            item_T_fin = QTableWidgetItem(T_fin)
-            item_Duree = QTableWidgetItem(Duree)
+        try:
+            self.temp_total_simu = []
+            self.tableWidget.setRowCount(int(self.spinBox_8.value()))
+            self.data = []
+            for ind_i in range(1,int(self.spinBox_8.value())+1):
+                self.data.append((str(25*ind_i),str(25*ind_i),str(1440)))
+            for i, (T_init, T_fin, Duree) in enumerate(self.data):
+                item_T_init = QTableWidgetItem(T_init)
+                item_T_fin = QTableWidgetItem(T_fin)
+                item_Duree = QTableWidgetItem(Duree)
 
-            self.tableWidget.setItem(i, 0, item_T_init)
-            self.tableWidget.setItem(i, 1, item_T_fin)
-            self.tableWidget.setItem(i, 2, item_Duree)
+                self.tableWidget.setItem(i, 0, item_T_init)
+                self.tableWidget.setItem(i, 1, item_T_fin)
+                self.tableWidget.setItem(i, 2, item_Duree)
+        except:
+            pass
 
     def tabWidget_fonction(self):
         """Fonction d'affichage"""
+        try:
+            if self.tableWidget_on:
+                self.tableWidget_on = False
+                self.tableWidget.hide()
+                if self.comboBox_7.currentText() == "CNES":
+                    self.treeWidget.show()
 
-        if self.tableWidget_on:
-            self.tableWidget_on = False
-            self.tableWidget.hide()
-            if self.comboBox_7.currentText() == "CNES":
-                self.treeWidget.show()
+                if self.comboBox_7.currentText() == "CNES fast":
+                    self.treeWidget.show()
 
-            if self.comboBox_7.currentText() == "CNES fast":
-                self.treeWidget.show()
+                if self.comboBox_7.currentText() == "ESTEC":
+                    self.treeWidget_2.show()
 
-            if self.comboBox_7.currentText() == "ESTEC":
-                self.treeWidget_2.show()
-
-        else:
-            self.tableWidget_on = True
-            self.tableWidget.show()
-            self.treeWidget_2.hide()
-            self.treeWidget.hide()
+            else:
+                self.tableWidget_on = True
+                self.tableWidget.show()
+                self.treeWidget_2.hide()
+                self.treeWidget.hide()
+        except:
+            pass
 
     def comboBox_7_fonction(self):
         """Fonction d'affichage'"""
