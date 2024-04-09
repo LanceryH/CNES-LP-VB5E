@@ -131,6 +131,9 @@ $f(t,T)$ la fonction du segment parcourue par l'algorithme.
 
 ### $$f_{a}^{b}(t,T)=\sum_{l=1}^{a} (\sum_{k=1}^{b} (\sum_{j=1}^{t^k_{max}} (\sum_{i=1}^{n_{esp}} (\mu_i (1-e^{(-\frac{t_j}{\tau_i.e^{(-K_e(T_j-T_{Ref}))}})})))+f_{l}^{k-1}(t_{max},T_{max}))+f_{l-1}^{k}(t_{max},T_{max}))$$
 
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/ea6c1881-f953-4369-b6cc-2674ca1dc284" alt="drawing" width="45%" height="45%"/>
+<img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/1837c579-5b66-4b33-ad0f-42160c8c1864" alt="drawing" width="45%" height="45%"/>
+
 <img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/2015c8ba-332e-43cc-8661-9621cda7de3b" alt="drawing" width="45%" height="45%"/>
 <img src="https://github.com/LanceryH/Cnes_LP_VB5E/assets/108919405/02fc81d4-582e-4aa6-bfb6-0cbe51ea6e3e" alt="drawing" width="45%" height="45%"/>
 
@@ -141,6 +144,7 @@ $f(t,T)$ la fonction du segment parcourue par l'algorithme.
 pip install xlrd
 pip install pandas
 pip install numpy
+
 pip install scipy
 pip install PyQt5
 pip install matplotlib
