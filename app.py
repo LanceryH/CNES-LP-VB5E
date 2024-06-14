@@ -159,7 +159,7 @@ class Ui(QtWidgets.QMainWindow):
                             pd.DataFrame({'pred expo3 [%]': self.system.result_dic["fitted data exp"][2]}),
                             pd.DataFrame({'pred expo4 [%]': self.system.result_dic["fitted data exp"][3]}),
                             pd.DataFrame({'pred expo5 [%]': self.system.result_dic["fitted data exp"][4]})], axis=1)
-            df.to_excel(f"RP_{self.path.split("/")[-1][:-4]}.xlsx", index=True, header=True)
+            df.to_excel(f"Pred_{self.path.split("/")[-1][:-4]}.xlsx", index=True, header=True)
         except:
             self.msg_2.exec_()
 
@@ -174,7 +174,7 @@ class Ui(QtWidgets.QMainWindow):
             df = pd.concat([pd.DataFrame({'Time [min]': np.linspace(0,self.t_tot,self.t_tot)}),
                             pd.DataFrame({'Température [°C]': self.temp_total_simu}),
                             pd.DataFrame({'TML_sim [%]': self.list_z_glob_ext})], axis=1)
-        df.to_excel(f"RS_{self.path.split("/")[-1][:-4]}.xlsx", index=True, header=True)
+        df.to_excel(f"Simu_{self.path.split("/")[-1][:-4]}_{np.unique(self.temp_total_simu)}.xlsx", index=True, header=True)
 
     def pushButton_6_fonction(self):
         """Fonction de la simulation (Algo + Affichage)"""
@@ -483,6 +483,11 @@ class Ui(QtWidgets.QMainWindow):
 
     def actionOpen_fonction(self):
         """Fonction Ouvrir du menubar + affichage des données"""
+        msg = QMessageBox()
+        msg.setWindowTitle("Aide")
+        msg.setText("Merci de séléctionner un fichier \n -> menu 'Fichier' \n -> cliquer 'Ouvrir'")
+        msg.setIcon(QMessageBox.Information)
+        msg.exec_()
         path, filter = QtWidgets.QFileDialog.getOpenFileName(self, 'Select file', '', '(*.xlsx *.xls)')
         if path:
             self.path = path
