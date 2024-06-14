@@ -102,7 +102,7 @@ class Ui(QtWidgets.QMainWindow):
         self.pushButton_3.clicked.connect(self.pushButton_3_fonction)
         self.pushButton_5.clicked.connect(self.pushButton_5_fonction)
         self.pushButton_6.clicked.connect(self.pushButton_6_fonction)
-        self.comboBox_7.addItems(["CNES fast", "ESTEC", "CNES"])
+        self.comboBox_7.addItems(["CNES fast", "ESTEC", "CNES", "Diffusion"])
         self.comboBox_8.addItems(["Reg. Poly.", ""])
         self.comboBox_9.addItems(["Classique", "RegressionPol"])
         self.comboBox_7.currentIndexChanged.connect(self.comboBox_7_fonction)
